@@ -37,6 +37,7 @@
           ./nvim/nvim.nix
           ./dotfiles/tmux/tmux.nix
           ./dotfiles/bash/bash.nix
+          ./dotfiles/starship/starship.nix
         ];
       };
 
@@ -45,6 +46,7 @@
         packages = import ./dotfiles/packages.nix;
         environment = import ./dotfiles/environment.nix;
         bash = import ./dotfiles/bash/bash.nix;
+        starship = import ./dotfiles/starship/starship.nix;
         tmux = import ./dotfiles/tmux/tmux.nix;
         neovim = import ./nvim/nvim.nix;
         tooling = import ./tooling/tooling.nix;
