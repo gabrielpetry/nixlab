@@ -36,12 +36,6 @@
     nixfmt
     opentofu
     shfmt
-
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.hack
-    nerd-fonts.comic-shanns-mono
-    nerd-fonts.open-dyslexic
   ];
 
   programs.fzf = {
