@@ -3,9 +3,9 @@
   home.sessionPath = [
     "$HOME/.krew"
     "$HOME/.krew/bin"
-    "$HOME/nixlab/tooling/automation"
-    "$HOME/nixlab/tooling/cli"
-    "$HOME/nixlab/tooling/scripts"
+    "$HOME/tooling/automation"
+    "$HOME/tooling/cli"
+    "$HOME/tooling/scripts"
   ];
 
   home.file."tooling/scripts" = {
