@@ -22,7 +22,6 @@
 
     gh
     lazygit
-    pre-commit
     shellcheck
 
     go
