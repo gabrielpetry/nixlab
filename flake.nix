@@ -38,7 +38,9 @@
         ];
       };
 
+
       homeModules = {
+        home = import ./dotfiles/home.nix;
         bash = import ./dotfiles/bash/bash.nix;
         tmux = import ./dotfiles/tmux/tmux.nix;
         neovim = import ./nvim/nvim.nix;

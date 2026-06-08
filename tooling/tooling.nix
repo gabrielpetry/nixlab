@@ -1,5 +1,13 @@
 { pkgs, ... }:
 {
+  home.sessionPath = [
+    "$HOME/.krew"
+    "$HOME/.krew/bin"
+    "$HOME/nixlab/tooling/automation"
+    "$HOME/nixlab/tooling/cli"
+    "$HOME/nixlab/tooling/scripts"
+  ];
+
   home.file."tooling/scripts" = {
     source = ./scripts;
     recursive = true;

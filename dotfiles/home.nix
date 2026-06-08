@@ -68,13 +68,8 @@
   home.sessionPath = [
     "$HOME/.bun/bin"
     "$HOME/.cargo/bin"
-    "$HOME/.krew"
-    "$HOME/.krew/bin"
     "$HOME/.local/bin"
     "$HOME/bin"
-    "$HOME/nixlab/tooling/automation"
-    "$HOME/nixlab/tooling/cli"
-    "$HOME/nixlab/tooling/scripts"
   ];
 
   programs.fzf = {
