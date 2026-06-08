@@ -1,4 +1,5 @@
 .githooks/_bin/
 gitleaks_report.json
 dotfiles/bash-old
+homelabv2/
 user-config.nix

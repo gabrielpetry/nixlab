@@ -18,7 +18,7 @@ cd() {
 	# no zellijS
 
 	set_zellij_tab
-	set_tmux_tab
+	tmux_tab_name_set
 	load_env
 }
 
