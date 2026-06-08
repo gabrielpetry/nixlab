@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 [[ -n "${TMUX}" ]] && 
-    tmux rename-window "$(get_tab_name)"
+    tmux rename-window "$(tmux_tab_name_get)"

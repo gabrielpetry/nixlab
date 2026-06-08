@@ -5,7 +5,7 @@ set_zellij_tab() {
 	# shellcheck disable=SC2312
 	set +m
 	[[ -z "${ZELLIJ}" ]] && return
-	zellij action rename-tab "$(get_tab_name)"
+	zellij action rename-tab "$(tmux_tab_name_get)"
 	set -m
 }
 
