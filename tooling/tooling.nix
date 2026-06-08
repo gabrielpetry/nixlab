@@ -20,5 +20,16 @@
     kubecolor
     kubernetes-helm
     kustomize
+    k9s
+    argocd
+    kubeseal
+    k3d
+    krew
+    crossplane
+
+    awscli2
+
+    go-task
+    yamlfmt
   ];
 }

@@ -6,30 +6,48 @@
   home.stateVersion = "26.05";
   fonts.fontconfig.enable = true;
 
-  # Packages previously provided by brew (now via Nix)
   home.packages = with pkgs; [
-    cargo 
+    cargo
     rustc
     rust-analyzer
     rustfmt
 
     bat
+    delta
+    entr
+    eza
+    fd
+    htop
+    ncdu
+    ripgrep
     tree
-    yq
+    wget
+
     jq
+    yq
+
+    gh
+    lazygit
+    pre-commit
+    shellcheck
 
     go
-    opentofu
-    nixfmt
-    shfmt
+
+    uv
+    cue
+    hugo
+    opencode
+
     nixd
+    nixfmt
+    opentofu
+    shfmt
 
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.hack
     nerd-fonts.comic-shanns-mono
     nerd-fonts.open-dyslexic
-
 
     pi-coding-agent
   ];
@@ -40,7 +58,7 @@
     KUBECTL_CACHE_TTL_SECONDS = "15";
     TERM = "xterm-256color";
     CACHE_DIR = "$HOME/.cache";
-     KUBECONFIG = "$HOME/.kube/config";
+    KUBECONFIG = "$HOME/.kube/config";
     PNPM_HOME = "$HOME/.local/share/pnpm";
     BROWSER = "chromium-browser";
   };
