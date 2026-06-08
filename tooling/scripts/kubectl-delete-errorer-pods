@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# Reads the current Kubernetes namespace from kubeconfig
+_kubernetes_namespace() {
+    local kubeconfig="${KUBECONFIG:-${HOME}/.kube/config}"
+    [[ -f "$kubeconfig" ]] || { echo "default"; return; }
+
+    local current_context="" in_current_context=0 namespace="default" line value
+    while IFS= read -r line; do
+        case "$line" in
+        current-context:*)
+            current_context="${line#current-context:}"
+            current_context="${current_context# }"
+            ;;
+        -\ name:*)
+            value="${line#- name:}"
+            value="${value# }"
+            [[ "$value" == "$current_context" ]] && in_current_context=1 || in_current_context=0
+            ;;
+        *namespace:*)
+            ((in_current_context)) && {
+                namespace="${line#*namespace:}"
+                namespace="${namespace# }"
+            }
+            ;;
+        esac
+    done <"$kubeconfig"
+    echo "${namespace:-default}"
+}
+
+# Deletes pods in Error, Failed, or CrashLoopBackOff state
+kubectl-delete-errorer-pods() {
+    local namespace="${1:-$(_kubernetes_namespace)}"
+    local pods
+    pods="$(kubectl get pod -n "$namespace" 2>/dev/null | grep -E 'Error|Failed|CrashLoopBackOff' | awk '{print $1}')"
+    [[ -z "$pods" ]] && { echo "No error pods found in namespace '$namespace'" >&2; exit 0; }
+    echo "Deleting error pods in namespace '$namespace':"
+    echo "$pods"
+    kubectl delete -n "$namespace" pod $pods
+}
+
+kubectl-delete-errorer-pods "$@"

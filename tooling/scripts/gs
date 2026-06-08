@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git branch | grep --color -i \* | awk '{print $2}'
+echo ---
+git status -s
+echo "$(git status -s | wc -l) Arquivos modificados"

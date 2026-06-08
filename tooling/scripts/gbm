@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+git switch main || git switch master
+git fetch origin
+git pull origin "$(git rev-parse --abbrev-ref HEAD)"

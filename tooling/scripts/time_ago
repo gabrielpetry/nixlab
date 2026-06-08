@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+export TZ=America/Sao_Paulo
+now_unix=$(date +%s)
+past_unix=$(date -d "$1" +%s)
+diff_seconds=$((now_unix - past_unix))
+
+minutes=$((diff_seconds / 60))
+hours=$((minutes / 60))
+days=$((hours / 24))
+
+if ((days > 0)); then
+  hours=$((hours % 24))
+  echo "${days}d${hours}h${minutes}m"
+elif ((hours > 0)); then
+  minutes=$((minutes % 60))
+  echo "${hours}h${minutes}m"
+else
+  echo "${minutes}m"
+fi

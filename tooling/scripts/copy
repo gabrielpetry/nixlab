@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+  if type 'xclip' >/dev/null 2>&1; then
+    if [[ -t 1 ]]; then
+      xclip -selection clipboard "$@"
+    else
+      cat - | xclip -selection clipboard
+    fi
+  elif type 'xsel' >/dev/null 2>&1; then
+    if [[ -t 1 ]]; then
+      xsel --clipboard --input "$@"
+    else
+      cat - | xsel --clipboard --input
+    fi
+  fi
+else
+  if type 'wl-copy' >/dev/null 2>&1; then
+    if [[ -t 1 ]]; then
+      wl-copy "$@"
+    else
+      cat - | wl-copy
+    fi
+  fi
+
+  # wsl
+  if test -f /mnt/c/win32yank.exe; then
+    if [[ -t 1 ]]; then
+      /mnt/c/win32yank.exe -i "$@"
+    else
+      cat - | /mnt/c/win32yank.exe -i
+    fi
+  fi
+fi

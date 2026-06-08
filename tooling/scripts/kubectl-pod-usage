@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# Self-contained wrapper: prefer kubecolor with forced colors, fall back to kubectl
+_kubecmd() {
+    if command -v kubecolor >/dev/null 2>&1; then
+        kubecolor --force-colors "$@"
+    else
+        kubectl "$@"
+    fi
+}
+
+# Combines kubectl get pod and kubectl top pod into a single unified output
+# showing resource usage per pod.
+kubectl-pod-usage() {
+    local get_temp_file top_temp_file columns
+    top_temp_file="$(mktemp)"
+    get_temp_file="$(mktemp)"
+
+    columns="NAME,CPU,MEMORY,READY,STATUS,RESTARTS,AGE"
+
+    [[ "$*" == *-A* ]] || [[ "$*" == *--all-namespaces* ]] && columns="NAMESPACE,${columns}"
+
+    {
+        _kubecmd get pods "$@" | sed -E 's/([0-9]+) \((\S+) ago\)/\1_(\2_ago)/g' >"$get_temp_file" &
+        _kubecmd top pods "$@" >"$top_temp_file" &
+    } >/dev/null 2>&1
+    wait 2>/dev/null
+
+    awk 'FILENAME == ARGV[1] {
+        if ($1 == "NAME" || $2 == "CPU") next
+        metrics[$1] = $2 "\t" $3
+        next
+    }
+    FNR == 1 {
+        print $0 "\tCPU\tMEMORY"
+        next
+    }
+    {
+        if ($1 in metrics)
+            print $0 "\t" metrics[$1]
+        else
+            print $0 "\t-\t-"
+    }' <(echo -e "$(cat "$top_temp_file")") <(echo -e "$(cat "$get_temp_file")") |
+        sed 's/|/\t/g' |
+        column --table |
+        sed -E 's/([0-9]+)_\((\S+)_ago\)/\1 (\2 ago)/g'
+
+    rm "$get_temp_file" "$top_temp_file"
+}
+
+kubectl-pod-usage "$@"

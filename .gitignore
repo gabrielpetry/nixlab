@@ -1,0 +1,4 @@
+.githooks/_bin/
+gitleaks_report.json
+dotfiles/bash-old
+user-config.nix

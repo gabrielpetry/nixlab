@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+if [ -n "$1" ]; then
+	branch="$1"
+else
+	branch="$(git branch -a | grep -v HEAD | sed 's/^[ *]*//g' | sed 's/remotes\/origin\///g' | fzf)"
+fi
+
+if [ -z "$branch" ]; then
+	echo "No branch selected"
+	exit 1
+fi
+
+echo "Fetching branches..."
+git fetch --prune
+git checkout "$branch"
+git pull origin "$branch"

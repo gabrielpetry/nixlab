@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# Self-contained wrapper: prefer kubecolor with forced colors, fall back to kubectl
+_kubecmd() {
+    if command -v kubecolor >/dev/null 2>&1; then
+        kubecolor --force-colors "$@"
+    else
+        kubectl "$@"
+    fi
+}
+
+# Lists failed pods with a pod/ prefix (useful for feeding into other commands)
+failed-pods-prefix() {
+    _kubecmd get pod "$@" | clear-ansi | grep --color -i 0/ | fawk 1 | sed -s 's/^/pod\//g'
+}
+
+failed-pods-prefix "$@"

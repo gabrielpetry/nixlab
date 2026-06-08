@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+KUBECTL_CACHE_TTL_SECONDS="${KUBECTL_CACHE_TTL_SECONDS:-15}"
+
+_kc_read_kubeconfig() {
+    local kubeconfig="${KUBECONFIG:-${HOME}/.kube/config}"
+    [[ -f "$kubeconfig" ]] || return 1
+
+    local current_context="" in_current_context=0 namespace="default" line value
+    while IFS= read -r line; do
+        case "$line" in
+        current-context:*)
+            current_context="${line#current-context:}"
+            current_context="${current_context# }"
+            ;;
+        -\ name:*)
+            value="${line#- name:}"
+            value="${value# }"
+            [[ "$value" == "$current_context" ]] && in_current_context=1 || in_current_context=0
+            ;;
+        *namespace:*)
+            ((in_current_context)) && {
+                namespace="${line#*namespace:}"
+                namespace="${namespace# }"
+            }
+            ;;
+        esac
+    done <"$kubeconfig"
+
+    _KC_CONTEXT="${current_context##*cluster/}"
+    _KC_NAMESPACE="${namespace:-default}"
+}
+
+_kc_clear_ansi() {
+    sed 's/\x1b\[[0-9;]*m//g'
+}
+
+_kubecmd() {
+    if command -v kubecolor >/dev/null 2>&1; then
+        kubecolor --force-colors "$@"
+    else
+        kubectl "$@"
+    fi
+}
+
+main() {
+    set -o pipefail
+    local edit_mode=0
+    local args=()
+    local ttl_seconds="${KUBECTL_CACHE_TTL_SECONDS}"
+
+    for arg in "$@"; do
+        case "$arg" in
+        ndoe | ndeo | noed)
+            args+=("node")
+            ;;
+        pdo | odp)
+            args+=("pod")
+            ;;
+        klock | ctr | get-all)
+            edit_mode=1
+            args=("${arg}" "${args[@]}")
+            ;;
+        --no-cache | -nc)
+            ttl_seconds=0
+            ;;
+        --force-cache | -fc)
+            ttl_seconds=36000
+            ;;
+        --context)
+            edit_mode=1
+            args+=("${arg}")
+            ;;
+        diff | apply | edit | delete | create | replace | patch | scale | rollout | cordon | uncordon | drain | logs | nodes | port-forward | node | exec)
+            edit_mode=1
+            args+=("${arg}")
+            ;;
+        plain-secrets)
+            exec kubectl-plain-secrets "$@"
+            ;;
+        *)
+            args+=("${arg}")
+            ;;
+        esac
+    done
+
+    _kc_read_kubeconfig
+    local context="${_KC_CONTEXT}"
+    local namespace="${_KC_NAMESPACE}"
+
+    case "$context" in
+    k3s-ansible | homelab | minikube | docker-desktop | kwok | k3d* | k3s* | *local*)
+        ttl_seconds=0
+        ;;
+    esac
+
+    [[ "${edit_mode}" -eq 1 ]] && { _kubecmd "${args[@]}"; return; }
+
+    local cache_dir="/tmp/kubectl_cache_${context}"
+    mkdir -p "${cache_dir}"
+    local cache_file="${cache_dir}/$(printf '%s' "$namespace" | _kc_clear_ansi)_$(printf '%s' "${args[*]}" | sed 's/[^a-zA-Z0-9]/_/g' | md5sum | awk '{print $1}').cache"
+
+    if [[ -f "${cache_file}" && $(($(date +%s) - $(stat -c %Y "${cache_file}"))) -lt "${ttl_seconds}" ]]; then
+        if [[ -t 1 ]]; then
+            /usr/bin/cat "${cache_file}"
+        else
+            /usr/bin/cat "${cache_file}" | _kc_clear_ansi
+        fi
+    else
+        if [[ -t 1 ]]; then
+            _kubecmd "${args[@]}" | tee "${cache_file}"
+        else
+            _kubecmd "${args[@]}" | tee "${cache_file}" | _kc_clear_ansi
+        fi
+    fi
+}
+
+main "$@"

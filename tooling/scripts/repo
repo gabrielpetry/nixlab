@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+REPOS_DIR="$HOME/repos"
+
+repo=""
+
+if [ -z "$1" ]; then
+    owners=$(ls "$REPOS_DIR")
+    repo_list=""
+    for owner in $owners; do
+        repos=$(ls "$REPOS_DIR/$owner")
+        for repo in $repos; do
+            repo_list="$repo_list\n$owner/$repo"
+        done
+    done
+    repo=$(echo -e "$repo_list" | fzf)
+elif [ -z "$2" ]; then
+    # list all the repos for the owner
+    owner=$1
+    repos=$(ls "$REPOS_DIR/$owner")
+    repo="$owner/$(echo "$repos" | fzf)"
+else
+    # cd into the repo
+    repo="$1/$2"
+fi
+
+# shellcheck disable=SC2164
+cd "$REPOS_DIR/$repo"

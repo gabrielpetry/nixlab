@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Strips ANSI escape sequences (colors, cursor moves, etc.) from stdin.
+# Usage: command-with-colors | clear-ansi
+
+sed 's/\x1b\[[0-9;]*m//g'

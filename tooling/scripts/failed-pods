@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# Self-contained wrapper: prefer kubecolor with forced colors, fall back to kubectl
+_kubecmd() {
+    if command -v kubecolor >/dev/null 2>&1; then
+        kubecolor --force-colors "$@"
+    else
+        kubectl "$@"
+    fi
+}
+
+# Lists pods with ready-state 0/N (failed/not-ready containers)
+failed-pods() {
+    _kubecmd get pod "$@" | clear-ansi | grep --color -i 0/ | fawk 1
+}
+
+failed-pods "$@"

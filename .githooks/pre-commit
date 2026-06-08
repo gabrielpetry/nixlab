@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook — runs all executable scripts in hooks/pre-commit/ in order.
+#
+# Scripts are executed in lexicographic (sorted) order, so you can control
+# the ordering by prefixing with numbers, e.g.:
+#   01-lint.sh
+#   02-format.sh
+#   03-test.sh
+#
+# If any script exits with a non-zero status, the hook aborts immediately
+# and the commit is prevented.
+export RED=$'\033[0;31m'
+export GREEN=$'\033[0;32m'
+export YELLOW=$'\033[0;33m'
+export BLUE=$'\033[0;34m'
+export MAGENTA=$'\033[0;35m'
+export CYAN=$'\033[0;36m'
+export WHITE=$'\033[0;37m'
+export NC=$'\033[0m'
+
+set -euo pipefail
+
+SUCCESS=""
+ERROR=""
+
+OK() {
+    # echo "${GREEN}✓ $1${NC}"
+    SUCCESS+="${GREEN}✓ $1${NC}\n"
+}
+
+FAIL() {
+    ERROR+="${RED}✗ $1${NC}\n"
+}
+
+# Resolve the repository root (handles bare repos, worktrees, etc.)
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+export gitleaks_version="8.30.1"
+export trivy_version="0.71.0"
+export repo_root="$repo_root"
+mkdir -p .githooks/_bin/
+
+echo "Running pre-commit.d hooks"
+for script in ./.githooks/pre-commit.d/*; do
+    echo "Running $script"
+    output=$("$script" 2>&1) || true
+    [ $? -eq 0 ] && OK "$script" || FAIL "$script:\n\t$output"
+done
+
+printf "\nSummary:\n"
+printf "  ${GREEN}✓ Passed${NC}: %d of %d\n" "$(echo -e "$SUCCESS" | grep -c '✓')" "$(ls -1 ./.githooks/pre-commit.d/* | wc -l)"
+echo -e "$SUCCESS"
+echo -e "$ERROR"
+[ -z "$ERROR" ]

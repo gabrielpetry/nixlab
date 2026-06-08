@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+md() {
+	repo="${1:-$(repo)}"
+	shift || true
+	gh pr list --search "is:open author:@me review:required" --json url,title,headRepository,headRepositoryOwner --repo "$repo" |
+		jq -r '.[] | "\(.headRepositoryOwner.login)/\(.headRepository.name) [\(.title)](\(.url))"'
+
+}
+
+# List PRs from all repos under $HOME/repos/<org>/
+# Usage: ghprlist all <org>
+all() {
+	local org="${1:-}"
+	[ -z "$org" ] && { echo "Usage: ghprlist all <org>"; return 1; }
+	local org_dir="$HOME/repos/$org"
+	dirs="$(ls "$org_dir" 2>/dev/null || echo "")"
+	repos=()
+	for d in $dirs; do
+		if [[ -d "$org_dir/$d/.git/refs/remotes" ]]; then
+			cd "$org_dir/$d"
+			repo="$(git remote -v | grep fetch | awk '{print $2}' | cut -d: -f2- | sed -e 's/.git//' | tr '[:upper:]' '[:lower:]')"
+			[[ -z "$repo" ]] && continue
+			repos+=("$repo")
+		fi
+	done
+
+	for r in "${repos[@]}"; do
+		md "$r"
+	done
+}
+
+if [[ "${1:-}" == "" ]]; then
+	md "$(git remote -v | grep fetch | awk '{print $2}' | cut -d: -f2- | cut -d. -f1)"
+else
+	"$@"
+fi

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+contexts="$(kubectl config get-contexts -o name | sort)"
+
+context="${1:-}"
+[[ -z "${context}" ]] &&
+    context=$(echo "${contexts}" | fzf)
+
+[[ -z "${context}" ]] &&
+    echo "No context selected" &&
+    exit 1
+
+context_full="$(echo "${contexts}" | grep "${context}")"
+
+kubectl config use-context "${context_full}"

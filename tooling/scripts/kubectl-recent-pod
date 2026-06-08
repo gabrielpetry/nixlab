@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+# Self-contained wrapper: prefer kubecolor with forced colors, fall back to kubectl
+_kubecmd() {
+    if command -v kubecolor >/dev/null 2>&1; then
+        kubecolor --force-colors "$@"
+    else
+        kubectl "$@"
+    fi
+}
+
+# Gets the most recently created pod across namespaces or in the current one
+kubectl-recent-pod() {
+    _kubecmd get pod "$@" --sort-by=.metadata.creationTimestamp | tail -n 1
+}
+
+kubectl-recent-pod "$@"

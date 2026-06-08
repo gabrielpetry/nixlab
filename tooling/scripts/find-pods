@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+
+this="$(basename "$0")"
+
+
+pods_with_scrape_label() {
+  kubectl get pod -A -o jsonpath='{range .items[?(@.metadata.annotations.prometheus\.io/scrape)]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
+}
+
+services_with_scrape_label() {
+  kubectl get service -A -o jsonpath='{range .items[?(@.metadata.annotations.prometheus\.io/scrape)]}{.metadata.namespace}{"\t"}{.metadata.name}{"\n"}{end}'
+}
+
+save_pod_and_service_monitors() {
+  local output_file="$1"
+  if [[ -z "$output_file" ]]; then
+    echo "Usage: $0 <output_file>"
+    return 1
+  fi  
+
+  rm -f "$output_file"
+  touch "$output_file"
+  echo "Podmonitors " >> "$output_file"
+  kubectl get podmonitors -A 2>&1  >> "$output_file"
+  echo "Servicemonitors " >> "$output_file"
+  kubectl get servicemonitors -A >> "$output_file"
+  echo "Scrapeconfigs " 2>&1  >> "$output_file"
+  kubectl get scrapeconfigs -A 2>&1 >> "$output_file"
+}
+
+
+help() {
+  echo "Usage: $0 [command]"
+  echo ""
+  echo "Commands:"
+
+  cat "$0" | grep -E '^[a-zA-Z_][a-zA-Z0-9_-]*\(\)' | sed 's/().*//g' | sed 's/^/  /'
+  echo ""
+}
+
+
+if [[ -n "$1" ]]; then
+  "$@"
+else 
+  help
+  exit 1
+fi

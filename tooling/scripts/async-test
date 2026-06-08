@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+A=0
+B=0
+C=0
+
+{
+  A=1
+  sleep 1 &
+}
+
+{
+  B=2
+  sleep 1 &
+}
+
+wait -n
+echo "A=$A B=$B C=$C"

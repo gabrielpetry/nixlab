@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+export GTK_IM_MODULE=xim
+export QT_IM_MODULE=xim
+export XMODIFIERS=@im=none
+export XCOMPOSEFILE="${XCOMPOSEFILE:-$HOME/.XCompose}"
+export XKB_DEFAULT_LAYOUT="${XKB_DEFAULT_LAYOUT:-us}"
+export XKB_DEFAULT_VARIANT="${XKB_DEFAULT_VARIANT:-intl}"
+
+CHROMIUM_USER_FLAGS="${CHROMIUM_USER_FLAGS:-}"
+case " ${CHROMIUM_USER_FLAGS} " in
+  *" --ozone-platform=x11 "*) ;;
+  *) CHROMIUM_USER_FLAGS="${CHROMIUM_USER_FLAGS}${CHROMIUM_USER_FLAGS:+ }--ozone-platform=x11" ;;
+esac
+export CHROMIUM_USER_FLAGS
+
+exec /usr/bin/chromium-browser "$@"
