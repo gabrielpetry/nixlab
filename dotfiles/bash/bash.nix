@@ -94,6 +94,7 @@
       fi
 
       source ~/.config/bash/aliases.bash
+      cd . # set tmux tab name
 
     '';
 
