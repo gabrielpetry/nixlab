@@ -38,7 +38,9 @@
 
       . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
-      mkdir -p "$@" && cd "$@"
+      mkcd() {
+        mkdir -p "$@" && cd "$@"
+      }
 
     '';
 
