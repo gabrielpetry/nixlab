@@ -31,6 +31,8 @@
             };
           }
           ./dotfiles/home.nix
+          ./dotfiles/packages.nix
+          ./dotfiles/environment.nix
           ./tooling/tooling.nix
           ./nvim/nvim.nix
           ./dotfiles/tmux/tmux.nix
@@ -40,7 +42,8 @@
 
 
       homeModules = {
-        home = import ./dotfiles/home.nix;
+        packages = import ./dotfiles/packages.nix;
+        environment = import ./dotfiles/environment.nix;
         bash = import ./dotfiles/bash/bash.nix;
         tmux = import ./dotfiles/tmux/tmux.nix;
         neovim = import ./nvim/nvim.nix;

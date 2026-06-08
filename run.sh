@@ -36,5 +36,5 @@ EOF
 nix run home-manager/master -- switch --flake "path:$(dirname "$0")"
 
 for plugin in get-all klock ktop; do
-  kubectl krew list 2>/dev/null | grep -q "^${plugin}$" || kubectl krew install "$plugin"
+  krew list 2>/dev/null | grep -q "^${plugin}$" || krew install "$plugin"
 done
