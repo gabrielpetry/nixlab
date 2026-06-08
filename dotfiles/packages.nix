@@ -42,8 +42,6 @@
     nerd-fonts.hack
     nerd-fonts.comic-shanns-mono
     nerd-fonts.open-dyslexic
-
-    pi-coding-agent
   ];
 
   programs.fzf = {
