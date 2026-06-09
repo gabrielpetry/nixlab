@@ -38,6 +38,7 @@
           ./dotfiles/tmux/tmux.nix
           ./dotfiles/bash/bash.nix
           ./dotfiles/starship/starship.nix
+          ./coding-agents/pi.nix
         ];
       };
 
