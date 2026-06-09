@@ -48,7 +48,7 @@
       la = "ls -lah";
       tree = "tree -C";
       c = "ps aux | grep -v grep | grep --color -i";
-      repo = "source \"$HOME/nixlab/tooling/scripts/repo\"";
+      repo = "source \"$HOME/tooling/scripts/repo\"";
     };
 
     shellOptions = [
