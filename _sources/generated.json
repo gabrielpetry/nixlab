@@ -1,0 +1,32 @@
+{
+    "pi-coding-agent-arm64": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "pi-coding-agent-arm64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-oZGgyNV6vxQkxWD1OYHCoHD3TShjpHp5WOsWxVbEvAQ=",
+            "type": "url",
+            "url": "https://github.com/earendil-works/pi/releases/download/v0.79.1/pi-linux-arm64.tar.gz"
+        },
+        "version": "v0.79.1"
+    },
+    "pi-coding-agent-x64": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "pi-coding-agent-x64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-3BnSsk0Vx2lR/kQKR6ghLO20N6JWluvyelVIEVbenoY=",
+            "type": "url",
+            "url": "https://github.com/earendil-works/pi/releases/download/v0.79.1/pi-linux-x64.tar.gz"
+        },
+        "version": "v0.79.1"
+    }
+}

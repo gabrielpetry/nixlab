@@ -1,0 +1,7 @@
+[pi-coding-agent-x64]
+src.github = "earendil-works/pi"
+fetch.url = "https://github.com/earendil-works/pi/releases/download/$ver/pi-linux-x64.tar.gz"
+
+[pi-coding-agent-arm64]
+src.github = "earendil-works/pi"
+fetch.url = "https://github.com/earendil-works/pi/releases/download/$ver/pi-linux-arm64.tar.gz"

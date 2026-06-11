@@ -32,8 +32,11 @@ cat > "$(dirname "$0")/user-config.nix" << EOF
 }
 EOF
 
+nvfetcher
+nix flake update
+
 # Use path: so Nix sees all files (including gitignored user-config.nix)
-nix run home-manager/master -- switch --flake "path:$(dirname "$0")"
+nix run home-manager/master -- switch --flake "path:$(dirname "$0")" --show-trace
 
 for plugin in get-all klock ktop; do
   krew list 2>/dev/null | grep -q "^${plugin}$" || krew install "$plugin"

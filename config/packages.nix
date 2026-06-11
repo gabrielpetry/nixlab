@@ -32,6 +32,7 @@
     opencode
 
     nixd
+    nvfetcher
     nixfmt
     opentofu
     shfmt

@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # llm-agents.url = "github:numtide/llm-agents.nix";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,26 +32,26 @@
               inherit username homeDirectory;
             };
           }
-          ./dotfiles/home.nix
-          ./dotfiles/packages.nix
-          ./dotfiles/environment.nix
+          ./config/home.nix
+          ./config/packages.nix
+          ./config/environment.nix
           ./tooling/tooling.nix
-          ./nvim/nvim.nix
-          ./dotfiles/tmux/tmux.nix
-          ./dotfiles/bash/bash.nix
-          ./dotfiles/starship/starship.nix
-          ./coding-agents/pi.nix
+          ./config/nvim/nvim.nix
+          ./config/tmux/tmux.nix
+          ./config/bash/bash.nix
+          ./config/starship/starship.nix
+          ./packages/coding-agents/pi.nix
         ];
       };
 
 
       homeModules = {
-        packages = import ./dotfiles/packages.nix;
-        environment = import ./dotfiles/environment.nix;
-        bash = import ./dotfiles/bash/bash.nix;
-        starship = import ./dotfiles/starship/starship.nix;
-        tmux = import ./dotfiles/tmux/tmux.nix;
-        neovim = import ./nvim/nvim.nix;
+        packages = import ./config/packages.nix;
+        environment = import ./config/environment.nix;
+        bash = import ./config/bash/bash.nix;
+        starship = import ./config/starship/starship.nix;
+        tmux = import ./config/tmux/tmux.nix;
+        neovim = import ./config/nvim/nvim.nix;
         tooling = import ./tooling/tooling.nix;
       };
     };
