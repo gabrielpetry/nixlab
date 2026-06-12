@@ -9,6 +9,10 @@ abbrev-alias push="git push origin \$(git branch --show-current)"
 abbrev-alias pull="git fetch --prune; git pull origin \$(git branch --show-current)"
 
 abbrev-alias -g T=" 2>&1 | tail -n "
+abbrev-alias -g H=" 2>&1 | head -n "
+abbrev-alias -g J=" 2>&1 | jq -r "
+abbrev-alias -g Y=" 2>&1 | yq -r "
+abbrev-alias -g P=" 2>&1 | "
 abbrev-alias -g W='| wc -l'
 abbrev-alias -g WL='| wl-copy'
 abbrev-alias -g 2null=' 2>/dev/null 3>&1'
