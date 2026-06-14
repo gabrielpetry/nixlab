@@ -8,18 +8,18 @@
 {
   pi-coding-agent-arm64 = {
     pname = "pi-coding-agent-arm64";
-    version = "v0.79.1";
+    version = "v0.79.3";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.79.1/pi-linux-arm64.tar.gz";
-      sha256 = "sha256-oZGgyNV6vxQkxWD1OYHCoHD3TShjpHp5WOsWxVbEvAQ=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.79.3/pi-linux-arm64.tar.gz";
+      sha256 = "sha256-/8UGMqA244RalQuW4jNduMF1/wzPtYiZ/Ey5tIaWa4k=";
     };
   };
   pi-coding-agent-x64 = {
     pname = "pi-coding-agent-x64";
-    version = "v0.79.1";
+    version = "v0.79.3";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.79.1/pi-linux-x64.tar.gz";
-      sha256 = "sha256-3BnSsk0Vx2lR/kQKR6ghLO20N6JWluvyelVIEVbenoY=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.79.3/pi-linux-x64.tar.gz";
+      sha256 = "sha256-YxyJIOty/yB6nxKk0bqzm8D7KsUKEOzkWJi4O92efx4=";
     };
   };
 }
