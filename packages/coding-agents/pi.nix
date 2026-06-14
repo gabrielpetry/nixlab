@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  sources = pkgs.callPackage ../_sources/generated.nix {};
+  sources = pkgs.callPackage ../../_sources/generated.nix {};
 
   srcByArch = {
     "x86_64-linux"  = sources.pi-coding-agent-x64;
@@ -21,8 +21,7 @@ let
     installPhase = ''
       mkdir -p $out/share/pi $out/bin
       cp -r . $out/share/pi/
-      makeWrapper $out/share/pi/pi $out/bin/pi \
-        --chdir $out/share/pi
+      makeWrapper $out/share/pi/pi $out/bin/pi
     '';
   };
 in {

@@ -20,6 +20,7 @@ That's it. `run.sh` handles everything automatically:
 - Installs **Nix** (with flakes enabled) if you don't have it
 - Detects your **username** and **home directory** (no manual editing needed)
 - Runs **home-manager switch** to apply your dotfiles, tools, and shell config
+- Installs default developer tooling, including **Node.js**, **npm**, and **pnpm**
 
 > No need to edit `flake.nix` or set variables — `run.sh` generates a `user-config.nix` on the fly with your current user info.
 

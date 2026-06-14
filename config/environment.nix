@@ -13,6 +13,7 @@
   home.sessionPath = [
     "$HOME/.bun/bin"
     "$HOME/.cargo/bin"
+    "$PNPM_HOME"
     "$HOME/.local/bin"
     "$HOME/bin"
   ];

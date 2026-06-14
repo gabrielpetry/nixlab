@@ -25,6 +25,8 @@
     shellcheck
 
     go
+    nodejs
+    pnpm
 
     uv
     cue
