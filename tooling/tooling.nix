@@ -26,6 +26,8 @@
   home.packages = with pkgs; [
     kubectl
     kubecolor
+    fluxcd
+    flux9s
     kubernetes-helm
     kustomize
     k9s
