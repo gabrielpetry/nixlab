@@ -32,8 +32,9 @@ cat > "$(dirname "$0")/user-config.nix" << EOF
 }
 EOF
 
-nvfetcher
-nix flake update
+nvfetcher &
+nix flake update &
+wait -n
 
 # Use path: so Nix sees all files (including gitignored user-config.nix)
 nix run home-manager/master -- switch --flake "path:$(dirname "$0")" --show-trace
