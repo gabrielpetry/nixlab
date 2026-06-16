@@ -25,5 +25,17 @@
     lua
     luarocks
     ruff
+
+
+    # LSP servers/ linters/ formatters
+    basedpyright
+    selene
+    delve
+    isort
+    black
+    pyrefly
+    ansible-lint
+    python3Packages.debugpy
+    python3Packages.ty
   ];
 }
