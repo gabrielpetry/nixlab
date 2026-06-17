@@ -34,7 +34,7 @@ If you want to cherry-pick individual components into your own Nix config:
 |--------|------|--------------------|
 | `homeModules.fish` | [`dotfiles/fish/fish.nix`](dotfiles/fish/fish.nix) | Fish shell + fzf + direnv |
 | `homeModules.tmux` | [`dotfiles/tmux/tmux.nix`](dotfiles/tmux/tmux.nix) | Tmux terminal multiplexer |
-| `homeModules.neovim` | [`nvim/nvim.nix`](nvim/nvim.nix) | Neovim with AstroNvim plugins |
+| `homeModules.neovim` | [`config/nvim/nvim.nix`](config/nvim/nvim.nix) | Neovim with Nixvim |
 | `homeModules.bash` | [`dotfiles/bash/bash.nix`](dotfiles/bash/bash.nix) | Bash completions & aliases |
 | `homeModules.tooling` | [`tooling/tooling.nix`](tooling/tooling.nix) | Scripts in `~/bin` (`ghprlist`, etc.) |
 
