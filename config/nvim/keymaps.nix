@@ -1,10 +1,44 @@
 { nixvimLib, ... }:
 let
   mkRaw = nixvimLib.mkRaw;
-in {
+in
+{
   programs.nixvim.keymaps = [
     {
-      mode = [ "n" "x" ];
+      mode = [
+        "n"
+        "i"
+      ];
+      key = "<C-s>";
+      action = "<Esc><Cmd>write!<CR>i";
+      options = {
+        silent = true;
+        desc = "Force write";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "i"
+      ];
+      key = "<C-q>";
+      action = "<Esc><Cmd>quit!<CR>";
+      options = {
+        silent = true;
+        desc = "Force quit";
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>R";
+      action = mkRaw "function() _G.nixlab.rename_current_file() end";
+      options.desc = "Rename current file";
+    }
+    {
+      mode = [
+        "n"
+        "x"
+      ];
       key = "j";
       action = "v:count == 0 ? 'gj' : 'j'";
       options = {
@@ -14,7 +48,10 @@ in {
       };
     }
     {
-      mode = [ "n" "x" ];
+      mode = [
+        "n"
+        "x"
+      ];
       key = "k";
       action = "v:count == 0 ? 'gk' : 'k'";
       options = {
@@ -22,6 +59,48 @@ in {
         silent = true;
         desc = "Move cursor up";
       };
+    }
+    {
+      mode = "n";
+      key = "bb";
+      action = "<Cmd>BufferLinePick<CR>";
+      options.desc = "Pick buffer";
+    }
+    {
+      mode = "n";
+      key = "bc";
+      action = "<Cmd>BufferLineCloseOthers<CR>";
+      options.desc = "Close other buffers";
+    }
+    {
+      mode = "n";
+      key = "bC";
+      action = mkRaw "function() _G.nixlab.close_all_buffers() end";
+      options.desc = "Close all buffers";
+    }
+    {
+      mode = "n";
+      key = "bse";
+      action = "<Cmd>BufferLineSortByExtension<CR>";
+      options.desc = "Sort buffers by extension";
+    }
+    {
+      mode = "n";
+      key = "bsi";
+      action = "<Cmd>BufferLineSortByTabs<CR>";
+      options.desc = "Sort buffers by buffer number";
+    }
+    {
+      mode = "n";
+      key = "bsp";
+      action = "<Cmd>BufferLineSortByDirectory<CR>";
+      options.desc = "Sort buffers by path";
+    }
+    {
+      mode = "n";
+      key = "bsr";
+      action = "<Cmd>BufferLineSortByRelativeDirectory<CR>";
+      options.desc = "Sort buffers by relative path";
     }
     {
       mode = "n";
@@ -46,6 +125,18 @@ in {
       key = "<leader>n";
       action = "<Cmd>enew<CR>";
       options.desc = "New File";
+    }
+    {
+      mode = "n";
+      key = "b\\";
+      action = mkRaw ''function() _G.nixlab.pick_buffer_in_split("split") end'';
+      options.desc = "Pick buffer (horizontal split)";
+    }
+    {
+      mode = "n";
+      key = "b|";
+      action = mkRaw ''function() _G.nixlab.pick_buffer_in_split("vsplit") end'';
+      options.desc = "Pick buffer (vertical split)";
     }
     {
       mode = "n";
@@ -90,7 +181,11 @@ in {
       options.desc = "Add Comment Above";
     }
     {
-      mode = [ "n" "i" "t" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
       key = "<C-h>";
       action = mkRaw ''function() require("smart-splits").move_cursor_left() end'';
       options = {
@@ -99,7 +194,11 @@ in {
       };
     }
     {
-      mode = [ "n" "i" "t" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
       key = "<C-j>";
       action = mkRaw ''function() require("smart-splits").move_cursor_down() end'';
       options = {
@@ -108,7 +207,11 @@ in {
       };
     }
     {
-      mode = [ "n" "i" "t" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
       key = "<C-k>";
       action = mkRaw ''function() require("smart-splits").move_cursor_up() end'';
       options = {
@@ -117,7 +220,11 @@ in {
       };
     }
     {
-      mode = [ "n" "i" "t" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
       key = "<C-l>";
       action = mkRaw ''function() require("smart-splits").move_cursor_right() end'';
       options = {
@@ -189,7 +296,11 @@ in {
       };
     }
     {
-      mode = [ "n" "i" "t" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
       key = "<F7>";
       action = "<Esc><Cmd>ToggleTerm<CR>";
       options = {
@@ -198,7 +309,23 @@ in {
       };
     }
     {
-      mode = [ "n" "i" ];
+      mode = [
+        "n"
+        "i"
+        "t"
+      ];
+      key = "<C-'>";
+      action = "<Esc><Cmd>ToggleTerm<CR>";
+      options = {
+        silent = true;
+        desc = "Toggle terminal";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "i"
+      ];
       key = "<C-;>";
       action = "<Cmd>Twilight<CR>";
       options = {
@@ -305,7 +432,7 @@ in {
     {
       mode = "n";
       key = "<leader>bd";
-      action = "<Cmd>bdelete<CR>";
+      action = "<Cmd>BufferLinePickClose<CR>";
       options.desc = "Delete buffer";
     }
     {
@@ -317,13 +444,13 @@ in {
     {
       mode = "n";
       key = "<leader>o";
-      action = mkRaw ''function() _G.nixlab.toggle_explorer_focus() end'';
+      action = mkRaw "function() _G.nixlab.toggle_explorer_focus() end";
       options.desc = "Toggle Explorer Focus";
     }
     {
       mode = "n";
       key = "<leader>h";
-      action = mkRaw ''function() _G.nixlab.home() end'';
+      action = mkRaw "function() _G.nixlab.home() end";
       options.desc = "Home Screen";
     }
     {
@@ -335,7 +462,7 @@ in {
     {
       mode = "n";
       key = "<leader>fa";
-      action = mkRaw ''function() _G.nixlab.find_config_files() end'';
+      action = mkRaw "function() _G.nixlab.find_config_files() end";
       options.desc = "Find config files";
     }
     {
@@ -371,8 +498,20 @@ in {
     {
       mode = "n";
       key = "<leader>fg";
-      action = mkRaw ''function() _G.nixlab.git_files() end'';
+      action = mkRaw "function() _G.nixlab.git_files() end";
       options.desc = "Find git files";
+    }
+    {
+      mode = "n";
+      key = "<leader>f'";
+      action = "<Cmd>Telescope marks<CR>";
+      options.desc = "Find marks";
+    }
+    {
+      mode = "n";
+      key = "<leader>fl";
+      action = "<Cmd>Telescope current_buffer_fuzzy_find<CR>";
+      options.desc = "Find lines";
     }
     {
       mode = "n";
@@ -401,7 +540,7 @@ in {
     {
       mode = "n";
       key = "<leader>fO";
-      action = mkRaw ''function() _G.nixlab.find_oldfiles_cwd() end'';
+      action = mkRaw "function() _G.nixlab.find_oldfiles_cwd() end";
       options.desc = "Find old files (cwd)";
     }
     {
@@ -431,6 +570,12 @@ in {
     {
       mode = "n";
       key = "<leader>gb";
+      action = "<Cmd>Telescope git_branches<CR>";
+      options.desc = "Git branches";
+    }
+    {
+      mode = "n";
+      key = "<leader>gB";
       action = mkRaw ''function() require("gitsigns").blame_line({ full = true }) end'';
       options.desc = "Git blame line";
     }
@@ -455,7 +600,7 @@ in {
     {
       mode = "n";
       key = "<leader>gg";
-      action = mkRaw ''function() _G.nixlab.toggle_lazygit() end'';
+      action = mkRaw "function() _G.nixlab.toggle_lazygit() end";
       options.desc = "Lazygit";
     }
     {
@@ -479,8 +624,26 @@ in {
     {
       mode = "n";
       key = "<leader>tl";
-      action = mkRaw ''function() _G.nixlab.toggle_lazygit() end'';
+      action = mkRaw "function() _G.nixlab.toggle_lazygit() end";
       options.desc = "Lazygit";
+    }
+    {
+      mode = "n";
+      key = "<leader>tn";
+      action = mkRaw "function() _G.nixlab.toggle_node() end";
+      options.desc = "Node terminal";
+    }
+    {
+      mode = "n";
+      key = "<leader>tp";
+      action = mkRaw "function() _G.nixlab.toggle_python() end";
+      options.desc = "Python terminal";
+    }
+    {
+      mode = "n";
+      key = "<leader>tt";
+      action = mkRaw "function() _G.nixlab.toggle_btm() end";
+      options.desc = "btm terminal";
     }
     {
       mode = "n";
@@ -532,32 +695,152 @@ in {
     }
     {
       mode = "n";
+      key = "[q";
+      action = "<Cmd>cprev<CR>";
+      options.desc = "Previous quickfix";
+    }
+    {
+      mode = "n";
+      key = "]q";
+      action = "<Cmd>cnext<CR>";
+      options.desc = "Next quickfix";
+    }
+    {
+      mode = "n";
+      key = "[Q";
+      action = "<Cmd>cfirst<CR>";
+      options.desc = "First quickfix";
+    }
+    {
+      mode = "n";
+      key = "]Q";
+      action = "<Cmd>clast<CR>";
+      options.desc = "Last quickfix";
+    }
+    {
+      mode = "n";
+      key = "[l";
+      action = "<Cmd>lprev<CR>";
+      options.desc = "Previous location list";
+    }
+    {
+      mode = "n";
+      key = "]l";
+      action = "<Cmd>lnext<CR>";
+      options.desc = "Next location list";
+    }
+    {
+      mode = "n";
+      key = "[L";
+      action = "<Cmd>lfirst<CR>";
+      options.desc = "First location list";
+    }
+    {
+      mode = "n";
+      key = "]L";
+      action = "<Cmd>llast<CR>";
+      options.desc = "Last location list";
+    }
+    {
+      mode = "n";
       key = "<leader>ud";
-      action = mkRaw ''function() _G.nixlab.toggle_diagnostics() end'';
+      action = mkRaw "function() _G.nixlab.toggle_diagnostics() end";
       options.desc = "Toggle diagnostics";
     }
     {
       mode = "n";
+      key = "<leader>ub";
+      action = mkRaw "function() _G.nixlab.toggle_background() end";
+      options.desc = "Toggle background";
+    }
+    {
+      mode = "n";
+      key = "<leader>u>";
+      action = mkRaw "function() _G.nixlab.toggle_foldcolumn() end";
+      options.desc = "Toggle foldcolumn";
+    }
+    {
+      mode = "n";
+      key = "<leader>ui";
+      action = mkRaw "function() _G.nixlab.toggle_indent_setting() end";
+      options.desc = "Toggle indent setting";
+    }
+    {
+      mode = "n";
+      key = "<leader>u|";
+      action = mkRaw "function() _G.nixlab.toggle_indent_guides() end";
+      options.desc = "Toggle indent guides";
+    }
+    {
+      mode = "n";
+      key = "<leader>ul";
+      action = mkRaw "function() _G.nixlab.toggle_statusline() end";
+      options.desc = "Toggle statusline";
+    }
+    {
+      mode = "n";
+      key = "<leader>uL";
+      action = mkRaw "function() _G.nixlab.toggle_codelens() end";
+      options.desc = "Toggle CodeLens";
+    }
+    {
+      mode = "n";
+      key = "<leader>up";
+      action = mkRaw "function() _G.nixlab.toggle_paste_mode() end";
+      options.desc = "Toggle paste mode";
+    }
+    {
+      mode = "n";
+      key = "<leader>us";
+      action = mkRaw "function() vim.wo.spell = not vim.wo.spell end";
+      options.desc = "Toggle spellcheck";
+    }
+    {
+      mode = "n";
+      key = "<leader>uS";
+      action = mkRaw "function() _G.nixlab.toggle_conceal() end";
+      options.desc = "Toggle conceal";
+    }
+    {
+      mode = "n";
+      key = "<leader>ut";
+      action = mkRaw "function() _G.nixlab.toggle_tabline() end";
+      options.desc = "Toggle tabline";
+    }
+    {
+      mode = "n";
+      key = "<leader>uV";
+      action = mkRaw "function() _G.nixlab.toggle_virtual_lines() end";
+      options.desc = "Toggle virtual lines";
+    }
+    {
+      mode = "n";
+      key = "<leader>uY";
+      action = mkRaw "function() _G.nixlab.toggle_semantic_tokens() end";
+      options.desc = "Toggle semantic tokens";
+    }
+    {
+      mode = "n";
       key = "<leader>ug";
-      action = mkRaw ''function() _G.nixlab.toggle_signcolumn() end'';
+      action = mkRaw "function() _G.nixlab.toggle_signcolumn() end";
       options.desc = "Toggle signcolumn";
     }
     {
       mode = "n";
       key = "<leader>un";
-      action = mkRaw ''function() _G.nixlab.toggle_number() end'';
+      action = mkRaw "function() _G.nixlab.toggle_number() end";
       options.desc = "Toggle line numbers";
     }
     {
       mode = "n";
       key = "<leader>uv";
-      action = mkRaw ''function() _G.nixlab.toggle_virtual_text() end'';
+      action = mkRaw "function() _G.nixlab.toggle_virtual_text() end";
       options.desc = "Toggle virtual text";
     }
     {
       mode = "n";
       key = "<leader>uw";
-      action = mkRaw ''function() _G.nixlab.toggle_wrap() end'';
+      action = mkRaw "function() _G.nixlab.toggle_wrap() end";
       options.desc = "Toggle wrap";
     }
     {
@@ -565,6 +848,48 @@ in {
       key = "<leader>uT";
       action = "<Cmd>Twilight<CR>";
       options.desc = "Toggle Twilight";
+    }
+    {
+      mode = "n";
+      key = "<leader>Ss";
+      action = "<Cmd>AutoSession save<CR>";
+      options.desc = "Save session";
+    }
+    {
+      mode = "n";
+      key = "<leader>Sl";
+      action = "<Cmd>AutoSession restore<CR>";
+      options.desc = "Last session";
+    }
+    {
+      mode = "n";
+      key = "<leader>Sd";
+      action = "<Cmd>AutoSession delete<CR>";
+      options.desc = "Delete session";
+    }
+    {
+      mode = "n";
+      key = "<leader>SD";
+      action = "<Cmd>AutoSession delete<CR>";
+      options.desc = "Delete directory session";
+    }
+    {
+      mode = "n";
+      key = "<leader>Sf";
+      action = "<Cmd>AutoSession search<CR>";
+      options.desc = "Search sessions";
+    }
+    {
+      mode = "n";
+      key = "<leader>SF";
+      action = "<Cmd>AutoSession search<CR>";
+      options.desc = "Search directory sessions";
+    }
+    {
+      mode = "n";
+      key = "<leader>S.";
+      action = "<Cmd>AutoSession restore<CR>";
+      options.desc = "Load current directory session";
     }
   ];
 }
