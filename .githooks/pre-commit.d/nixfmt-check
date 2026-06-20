@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+nix_files=$(grep '\.nix$' "$staged_files" || true)
+if [ -z "$nix_files" ]; then
+  exit 0
+fi
+
+echo "$nix_files" | xargs nix run nixpkgs#nixfmt -- --check

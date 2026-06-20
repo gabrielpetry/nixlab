@@ -40,13 +40,14 @@ cd "$repo_root"
 export gitleaks_version="8.30.1"
 export trivy_version="0.71.0"
 export repo_root="$repo_root"
+export staged_files="$repo_root/.githooks/_bin/staged_files"
 mkdir -p .githooks/_bin/
+git diff --cached --name-only --diff-filter=ACMR > "$staged_files"
 
 echo "Running pre-commit.d hooks"
 for script in ./.githooks/pre-commit.d/*; do
     echo "Running $script"
-    output=$("$script" 2>&1) || true
-    [ $? -eq 0 ] && OK "$script" || FAIL "$script:\n\t$output"
+    output=$("$script" 2>&1) && OK "$script" || FAIL "$script:\n\t$output"
 done
 
 printf "\nSummary:\n"
