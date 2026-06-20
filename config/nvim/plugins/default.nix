@@ -1,0 +1,19 @@
+{
+  imports = [
+    ./core.nix
+    ./alpha.nix
+    ./lualine.nix
+    ./bufferline.nix
+    ./neo-tree.nix
+    ./telescope.nix
+    ./treesitter.nix
+    ./toggleterm.nix
+    ./smart-splits.nix
+    ./blink-cmp.nix
+    ./auto-session.nix
+    ./aerial.nix
+    ./conform-nvim.nix
+    ./lint.nix
+    ./lsp.nix
+  ];
+}

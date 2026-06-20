@@ -1,0 +1,31 @@
+{ pkgs, ... }: {
+  home.packages = with pkgs; [
+    gcc
+    stylua
+    gnumake
+    imagemagick
+    gnuplot
+    lua
+    luarocks
+    ruff
+    basedpyright
+    selene
+    delve
+    isort
+    black
+    pyrefly
+    ansible-lint
+    python3Packages.debugpy
+    python3Packages.ty
+    pkgs."ansible-language-server"
+    pkgs."bash-language-server"
+    gopls
+    pkgs."helm-ls"
+    pkgs."lua-language-server"
+    taplo
+    yamlfmt
+    yamllint
+    pkgs."yaml-language-server"
+    pkgs."vscode-langservers-extracted"
+  ];
+}
