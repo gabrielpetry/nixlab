@@ -45,6 +45,9 @@ in
     vimAlias = true;
     nixpkgs.source = pkgs.path;
 
-    extraPlugins = [ diagramNvim pkgs.vimPlugins.image-nvim ];
+    extraPlugins = [
+      diagramNvim
+      pkgs.vimPlugins.image-nvim
+    ];
   };
 }
