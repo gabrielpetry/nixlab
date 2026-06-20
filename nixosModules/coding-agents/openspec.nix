@@ -9,7 +9,7 @@ let
       hash = "sha256-wDm2F6lhSZ9JRmeRhCYZGJmY7d3IsFz+2yLDIUKgx3o=";
     };
 
-    npmDepsHash = "sha256-qYktmlDToJUZ4IJyggI6w3n53VhKNrrWhCu3Bq6R6SU=";
+    npmDepsHash = "sha256-vGD8rZgqcgIKOAQTuZVHh6C+QTrxkyw9CgdJ4NOwSp8=";
 
     postPatch = ''
       cp ${./openspec-package-lock.json} package-lock.json
