@@ -11,33 +11,34 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
   fi
 fi
 
-test -f /nix ||
-	sh <(curl -Ss --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon
+test -d /nix ||
+  sh <(curl -Ss --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon
 
 [ -z "${__ETC_PROFILE_NIX_SOURCED:-}" ] &&
-	. "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
 # sadly claude is unfree
 
 grep -q experimental-features ~/.config/nix/nix.conf || {
-	mkdir -p ~/.config/nix
-	echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+  mkdir -p ~/.config/nix
+  echo "experimental-features = nix-command flakes" >>~/.config/nix/nix.conf
 }
 
 # Generate user config dynamically so the flake evaluates with current user values
-cat > "$(dirname "$0")/user-config.nix" << EOF
+cat >"$(dirname "$0")/user-config.nix" <<EOF
 {
   username = "$(whoami)";
   homeDirectory = "$HOME";
 }
 EOF
 
+export NIXPKGS_ALLOW_UNFREE=1
 nvfetcher &
 nix flake update &
-wait -n
+wait
 
 # Use path: so Nix sees all files (including gitignored user-config.nix)
-nix run home-manager/master -- switch --flake "path:$(dirname "$0")" --show-trace
+nix run home-manager/master -- switch --flake "path:$(dirname "$0")" --show-trace --impure
 
 for plugin in get-all klock ktop; do
   krew list 2>/dev/null | grep -q "^${plugin}$" || krew install "$plugin"
