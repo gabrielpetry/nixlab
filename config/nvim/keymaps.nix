@@ -17,18 +17,6 @@ in
       };
     }
     {
-      mode = [
-        "n"
-        "i"
-      ];
-      key = "<C-q>";
-      action = "<Esc><Cmd>quit!<CR>";
-      options = {
-        silent = true;
-        desc = "Force quit";
-      };
-    }
-    {
       mode = "n";
       key = "<leader>R";
       action = mkRaw "function() _G.nixlab.rename_current_file() end";
@@ -62,43 +50,49 @@ in
     }
     {
       mode = "n";
-      key = "bb";
+      key = "<leader>bb";
       action = "<Cmd>BufferLinePick<CR>";
       options.desc = "Pick buffer";
     }
     {
       mode = "n";
-      key = "bc";
-      action = "<Cmd>BufferLineCloseOthers<CR>";
+      key = "<leader>bc";
+      action = "<Cmd>bdelete<CR>";
+      options.desc = "Close buffer";
+    }
+    {
+      mode = "n";
+      key = "<leader>bo";
+      action = mkRaw "function() _G.nixlab.close_other_buffers() end";
       options.desc = "Close other buffers";
     }
     {
       mode = "n";
-      key = "bC";
+      key = "<leader>bC";
       action = mkRaw "function() _G.nixlab.close_all_buffers() end";
       options.desc = "Close all buffers";
     }
     {
       mode = "n";
-      key = "bse";
+      key = "<leader>bse";
       action = "<Cmd>BufferLineSortByExtension<CR>";
       options.desc = "Sort buffers by extension";
     }
     {
       mode = "n";
-      key = "bsi";
+      key = "<leader>bsi";
       action = "<Cmd>BufferLineSortByTabs<CR>";
       options.desc = "Sort buffers by buffer number";
     }
     {
       mode = "n";
-      key = "bsp";
+      key = "<leader>bsp";
       action = "<Cmd>BufferLineSortByDirectory<CR>";
       options.desc = "Sort buffers by path";
     }
     {
       mode = "n";
-      key = "bsr";
+      key = "<leader>bsr";
       action = "<Cmd>BufferLineSortByRelativeDirectory<CR>";
       options.desc = "Sort buffers by relative path";
     }
@@ -110,31 +104,19 @@ in
     }
     {
       mode = "n";
-      key = "<leader>q";
-      action = "<Cmd>confirm q<CR>";
-      options.desc = "Quit Window";
-    }
-    {
-      mode = "n";
-      key = "<leader>Q";
-      action = "<Cmd>confirm qall<CR>";
-      options.desc = "Quit Neovim";
-    }
-    {
-      mode = "n";
       key = "<leader>n";
       action = "<Cmd>enew<CR>";
       options.desc = "New File";
     }
     {
       mode = "n";
-      key = "b\\";
+      key = "<leader>b\\";
       action = mkRaw ''function() _G.nixlab.pick_buffer_in_split("split") end'';
       options.desc = "Pick buffer (horizontal split)";
     }
     {
       mode = "n";
-      key = "b|";
+      key = "<leader>b|";
       action = mkRaw ''function() _G.nixlab.pick_buffer_in_split("vsplit") end'';
       options.desc = "Pick buffer (vertical split)";
     }
