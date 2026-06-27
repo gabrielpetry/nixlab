@@ -15,6 +15,7 @@ abbrev-alias -g Y=" 2>&1 | yq -r "
 abbrev-alias -g P=" 2>&1 | "
 abbrev-alias -g W='| wc -l'
 abbrev-alias -g WL='| wl-copy'
+abbrev-alias -g 2WL='| wl-copy'
 abbrev-alias -g 2null=' 2>/dev/null 3>&1'
 abbrev-alias -g G=' 2>&1 | grep --color -i '
 abbrev-alias -g Ga=' 2>&1 | grep --color=always -e "^" -i -e '
@@ -33,3 +34,4 @@ abbrev-alias -g B="| base64 -d"
 abbrev-alias -g BC="| base64 -d | copy"
 abbrev-alias -g kubesecret="| base64 -w 0| xclip -selection clipboard"
 abbrev-alias k='kubectl'
+
