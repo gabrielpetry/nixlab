@@ -7,4 +7,10 @@ if [ ! -f .githooks/_bin/trivy ]; then
     chmod +x .githooks/_bin/trivy
 fi
 
-.githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license .
+mapfile -t files < <(grep -v '^$' "$staged_files" || true)
+
+if [ "${#files[@]}" -eq 0 ]; then
+    exit 0
+fi
+
+.githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license "${files[@]}"
