@@ -3,5 +3,8 @@ gitleaks_report.json
 dotfiles/bash-old
 homelabv2/
 user-config.nix
-.qemu-noble/
 result
+.devboxvagrant up --provider=libvirt
+.vm/*
+!.vm/templates/
+!.vm/templates/*

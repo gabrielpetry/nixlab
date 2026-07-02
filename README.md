@@ -1,11 +1,11 @@
 # nixlab
 
-> **Personal dotfiles and Nix flake configuration.**  
+> **Personal workstation and server Nix flake configuration.**  
 > This repository is **public** — feel free to fork, adapt, and learn from it.
 
 ---
 
-## 🚀 Quickstart — `./run.sh`
+## 🚀 Workstation Quickstart — `./run.sh`
 
 **One command to bootstrap your entire system:**
 
@@ -15,7 +15,7 @@ cd ~/nixlab
 ./run.sh
 ```
 
-That's it. `run.sh` handles everything automatically:
+That's it. `run.sh` handles the workstation bootstrap automatically:
 
 - Installs **Nix** (with flakes enabled) if you don't have it
 - Detects your **username** and **home directory** (no manual editing needed)
@@ -23,6 +23,44 @@ That's it. `run.sh` handles everything automatically:
 - Installs default developer tooling, including **Node.js**, **npm**, and **pnpm**
 
 > No need to edit `flake.nix` or set variables — `run.sh` generates a `user-config.nix` on the fly with your current user info.
+
+---
+
+## 🖥️ Server Install And E2E Test
+
+`nixosConfigurations` is the server path in this repo. The current end-to-end test host is `dev-container`.
+
+Versioned hosts live under `nixosHosts/`. Private hosts are loaded from a separate repository checked out at `nixosHosts/local/`, with `nixosHosts/local/default.nix` as its entrypoint. A tracked contract example lives at `nixosHosts/local.example.nix`.
+
+The local VM harness provisions a fresh Ubuntu VM, converts it to NixOS with `nixos-anywhere`, and then runs a second remote deployment from the same flake.
+
+```sh
+./test.sh up
+./test.sh install
+./test.sh verify-install
+./test.sh deploy
+./test.sh verify-deploy
+```
+
+Notes:
+
+- `test.sh` stores a repo-local SSH key under `.qemu-noble/ssh/` and creates it automatically if missing.
+- The install flow uses `path:$PWD#dev-container` so gitignored local test files remain visible to Nix.
+- The installed server host intentionally does **not** use Home Manager.
+
+Example private host layout:
+
+```text
+nixosHosts/
+  local/
+    .git/
+    default.nix          # returns nixosConfigurations entries
+    my-host/
+      default.nix
+      disko.nix
+```
+
+The `nixosHosts/local/` tree is fully gitignored in this repo so it can be owned by that separate private repository.
 
 ---
 

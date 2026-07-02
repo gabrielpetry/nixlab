@@ -13,4 +13,10 @@ if [ "${#files[@]}" -eq 0 ]; then
     exit 0
 fi
 
-.githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license "${files[@]}"
+status=0
+
+for file in "${files[@]}"; do
+    .githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license "$file" || status=$?
+done
+
+exit "$status"

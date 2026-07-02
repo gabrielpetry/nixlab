@@ -6,20 +6,36 @@
   dockerTools,
 }:
 {
+  otelcol-contrib-arm64 = {
+    pname = "otelcol-contrib-arm64";
+    version = "0.155.0";
+    src = fetchurl {
+      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.155.0/otelcol-contrib_0.155.0_linux_arm64.tar.gz";
+      sha256 = "sha256-8vrAedW3Yacp5Jul2zGcq5Kv/FWEBtxC48HAjggn4U8=";
+    };
+  };
+  otelcol-contrib-x64 = {
+    pname = "otelcol-contrib-x64";
+    version = "0.155.0";
+    src = fetchurl {
+      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.155.0/otelcol-contrib_0.155.0_linux_amd64.tar.gz";
+      sha256 = "sha256-Ipz93rBiHSoBG/0ciJQzVHnkY0m5Ogz7zL5lNEOj7JU=";
+    };
+  };
   pi-coding-agent-arm64 = {
     pname = "pi-coding-agent-arm64";
-    version = "v0.80.2";
+    version = "v0.80.3";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.80.2/pi-linux-arm64.tar.gz";
-      sha256 = "sha256-Bxns9QpCyuefTG8NSmLgjo1EIXiMzQUNCKW781yI7fY=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.80.3/pi-linux-arm64.tar.gz";
+      sha256 = "sha256-xUSrKglTqb2jWMq5vDKLHvaJLUqCTYaTiAl35LI8YWg=";
     };
   };
   pi-coding-agent-x64 = {
     pname = "pi-coding-agent-x64";
-    version = "v0.80.2";
+    version = "v0.80.3";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.80.2/pi-linux-x64.tar.gz";
-      sha256 = "sha256-Lmh3K76qzXNIh1EJgZOHU4lja4BYkQBgmimSHe1xyYQ=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.80.3/pi-linux-x64.tar.gz";
+      sha256 = "sha256-50o0rCUFVWFkFE2OOaZNbVJ28JIWba2RQxntwwxIq+4=";
     };
   };
 }

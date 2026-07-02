@@ -5,3 +5,13 @@ fetch.url = "https://github.com/earendil-works/pi/releases/download/$ver/pi-linu
 [pi-coding-agent-arm64]
 src.github = "earendil-works/pi"
 fetch.url = "https://github.com/earendil-works/pi/releases/download/$ver/pi-linux-arm64.tar.gz"
+
+[otelcol-contrib-x64]
+src.github = "open-telemetry/opentelemetry-collector-releases"
+src.prefix = "v"
+fetch.url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v$ver/otelcol-contrib_$ver_linux_amd64.tar.gz"
+
+[otelcol-contrib-arm64]
+src.github = "open-telemetry/opentelemetry-collector-releases"
+src.prefix = "v"
+fetch.url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v$ver/otelcol-contrib_$ver_linux_arm64.tar.gz"
