@@ -1,0 +1,14 @@
+# network-config
+version: 2
+ethernets:
+  enp1s0:
+    dhcp4: false
+    addresses:
+      - $IP/24
+    routes:
+      - to: default
+        via: 10.10.120.1
+    nameservers:
+      addresses:
+        - 1.1.1.1
+        - 8.8.8.8
