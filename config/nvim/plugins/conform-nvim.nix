@@ -15,6 +15,8 @@ in {
         yaml = [ "yamlfmt" ];
         "yaml.ansible" = [ "yamlfmt" ];
         toml = [ "taplo" ];
+        terraform = [ "terraform_fmt" ];
+        "terraform-vars" = [ "terraform_fmt" ];
       };
       format_on_save = mkRaw ''
         function(bufnr)

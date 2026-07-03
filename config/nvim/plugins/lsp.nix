@@ -248,6 +248,10 @@ in
         enable = true;
         package = null;
       };
+      terraformls = {
+        enable = true;
+        package = null;
+      };
       yamlls = {
         enable = true;
         package = null;
