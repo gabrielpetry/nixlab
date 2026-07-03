@@ -1,0 +1,34 @@
+{
+  "packages": [
+    "bash@latest",
+    "coreutils@latest",
+    "findutils@latest",
+    "git@latest",
+    "gnugrep@latest",
+    "gnutar@latest",
+    "gzip@latest",
+    "wget@latest",
+    "gitleaks@latest",
+    "trivy@latest",
+    "openssh@latest",
+    "libvirt@latest",
+    "qemu_kvm@latest",
+    "vagrant@latest"
+  ],
+  "env": {
+    "VAGRANT_DEFAULT_PROVIDER": "qemu"
+  },
+  "shell": {
+    "init_hook": [
+      "git config --local core.hooksPath .githooks >/dev/null 2>&1 || true"
+    ],
+    "scripts": {
+      "hooks-install": "git config --local core.hooksPath .githooks",
+      "pre-commit": ".githooks/pre-commit",
+      "vagrant-up": "vagrant up --provider=${VAGRANT_DEFAULT_PROVIDER:-qemu}",
+      "vagrant-ssh": "vagrant ssh",
+      "vagrant-halt": "vagrant halt",
+      "vagrant-destroy": "vagrant destroy -f"
+    }
+  }
+}
