@@ -57,7 +57,7 @@ in
     {
       mode = "n";
       key = "<leader>bc";
-      action = "<Cmd>bdelete<CR>";
+      action = mkRaw "function() _G.nixlab.close_current_buffer(false) end";
       options.desc = "Close buffer";
     }
     {
@@ -390,13 +390,13 @@ in
     {
       mode = "n";
       key = "<leader>c";
-      action = "<Cmd>bdelete<CR>";
+      action = mkRaw "function() _G.nixlab.close_current_buffer(false) end";
       options.desc = "Close buffer";
     }
     {
       mode = "n";
       key = "<leader>C";
-      action = "<Cmd>bdelete!<CR>";
+      action = mkRaw "function() _G.nixlab.close_current_buffer(true) end";
       options.desc = "Force close buffer";
     }
     {

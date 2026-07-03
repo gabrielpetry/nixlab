@@ -9,6 +9,7 @@
     ./treesitter.nix
     ./toggleterm.nix
     ./smart-splits.nix
+    ./minuet-ai.nix
     ./blink-cmp.nix
     ./auto-session.nix
     ./aerial.nix

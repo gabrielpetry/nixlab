@@ -1,11 +1,11 @@
-{ pkgs, nixvimLib, ... }:
+{ nvimPkgs, nixvimLib, ... }:
 let
   mkRaw = nixvimLib.mkRaw;
 
-  diagramNvim = pkgs.vimUtils.buildVimPlugin {
+  diagramNvim = nvimPkgs.vimUtils.buildVimPlugin {
     pname = "diagram.nvim";
     version = "2026-06-12";
-    src = pkgs.fetchFromGitHub {
+    src = nvimPkgs.fetchFromGitHub {
       owner = "3rd";
       repo = "diagram.nvim";
       rev = "a221810b17cdda2d5fdddba9bab3eba6fab8fabc";
@@ -43,11 +43,13 @@ in
     enable = true;
     viAlias = true;
     vimAlias = true;
-    nixpkgs.source = pkgs.path;
+    package = nvimPkgs.neovim-unwrapped;
+    nixpkgs.pkgs = nvimPkgs;
 
     extraPlugins = [
       diagramNvim
-      pkgs.vimPlugins.image-nvim
+      nvimPkgs.vimPlugins.image-nvim
+      nvimPkgs.vimPlugins.minuet-ai-nvim
     ];
   };
 }

@@ -28,30 +28,40 @@ That's it. `run.sh` handles the workstation bootstrap automatically:
 
 ## 🖥️ Server Install And E2E Test
 
-`nixosConfigurations` is the server path in this repo. The current end-to-end test host is `dev-container`.
+`nixosConfigurations` is the server path in this repo. The current local test host is `vm01`.
 
-Versioned hosts live under `nixosHosts/`. Private hosts are loaded from a separate repository checked out at `nixosHosts/local/`, with `nixosHosts/local/default.nix` as its entrypoint. A tracked contract example lives at `nixosHosts/local.example.nix`.
+Versioned hosts live under `nixosAnywhere/`. Private hosts are loaded from a separate repository checked out at `nixosAnywhere/local/`, with `nixosAnywhere/local/default.nix` as its entrypoint. A tracked contract example lives at `nixosAnywhere/local.example.nix`.
 
-The local VM harness provisions a fresh Ubuntu VM, converts it to NixOS with `nixos-anywhere`, and then runs a second remote deployment from the same flake.
+The local VM harness only manages Vagrant/QEMU lifecycle:
 
 ```sh
-./test.sh up
-./test.sh install
-./test.sh verify-install
-./test.sh deploy
-./test.sh verify-deploy
+./dev.sh up --name vm01
+./dev.sh ps
+./dev.sh destroy --name vm01
+```
+
+Install any reachable host with the standalone `nixos-anywhere` wrapper:
+
+```sh
+./nixanywhere.sh --hostname vm01 --ip 127.0.0.1 --port 50022 --ssh-user vagrant --ssh-key .vagrant/machines/vm01/qemu/private_key
+```
+
+For a normal server, `--ssh-user` defaults to `root`, `--port` defaults to `22`, and `--ssh-key` defaults to the first existing key under `~/.ssh/id_ed25519` or `~/.ssh/id_rsa`:
+
+```sh
+./nixanywhere.sh --hostname my-host --ip 203.0.113.10
 ```
 
 Notes:
 
-- `test.sh` stores a repo-local SSH key under `.qemu-noble/ssh/` and creates it automatically if missing.
-- The install flow uses `path:$PWD#dev-container` so gitignored local test files remain visible to Nix.
+- `--hostname` selects the `nixosConfigurations` flake output to install.
+- The install flow uses `path:$PROJECT_ROOT#HOSTNAME` so repo-local generated files remain visible to Nix.
 - The installed server host intentionally does **not** use Home Manager.
 
 Example private host layout:
 
 ```text
-nixosHosts/
+nixosAnywhere/
   local/
     .git/
     default.nix          # returns nixosConfigurations entries
@@ -60,7 +70,7 @@ nixosHosts/
       disko.nix
 ```
 
-The `nixosHosts/local/` tree is fully gitignored in this repo so it can be owned by that separate private repository.
+The `nixosAnywhere/local/` tree is fully gitignored in this repo so it can be owned by that separate private repository.
 
 ---
 

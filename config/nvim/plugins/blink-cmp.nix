@@ -5,6 +5,7 @@ in
 {
   programs.nixvim.plugins.blink-cmp = {
     enable = true;
+    settings.use_nvim_cmp_as_default = true;
     settings.keymap = {
       preset = "default";
       "<CR>" = [

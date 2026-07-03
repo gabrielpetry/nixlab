@@ -1,14 +1,18 @@
-{ pkgs, ... }: {
+{ nvimPkgs, ... }: {
   programs.nixvim.plugins.treesitter = {
     enable = true;
     highlight = {
       enable = true;
-      disable = [ "markdown" "markdown_inline" ];
+      disable = [
+        "markdown"
+        "markdown_inline"
+      ];
     };
     indent.enable = true;
-    grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+    grammarPackages = with nvimPkgs.vimPlugins.nvim-treesitter.builtGrammars; [
       bash
       go
+      hcl
       helm
       json
       lua
@@ -19,6 +23,7 @@
       python
       query
       regex
+      terraform
       toml
       vim
       vimdoc

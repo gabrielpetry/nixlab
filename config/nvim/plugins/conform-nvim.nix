@@ -1,20 +1,29 @@
 { nixvimLib, ... }:
 let
   mkRaw = nixvimLib.mkRaw;
-in {
+in
+{
   programs.nixvim.plugins.conform-nvim = {
     enable = true;
     settings = {
       formatters_by_ft = {
         lua = [ "stylua" ];
         nix = [ "nixfmt" ];
-        python = [ "isort" "black" ];
-        go = [ "goimports" "gofmt" ];
+        python = [
+          "isort"
+          "black"
+        ];
+        go = [
+          "goimports"
+          "gofmt"
+        ];
         bash = [ "shfmt" ];
         sh = [ "shfmt" ];
         yaml = [ "yamlfmt" ];
         "yaml.ansible" = [ "yamlfmt" ];
         toml = [ "taplo" ];
+        terraform = [ "terraform_fmt" ];
+        "terraform-vars" = [ "terraform_fmt" ];
       };
       format_on_save = mkRaw ''
         function(bufnr)

@@ -82,6 +82,26 @@
       close_buffers(function(buf) return buf ~= current end)
     end
 
+    _G.nixlab.close_current_buffer = function(force)
+      local current = vim.api.nvim_get_current_buf()
+      local replacement = nil
+
+      for _, buf in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+        if buf.bufnr ~= current and vim.api.nvim_buf_is_loaded(buf.bufnr) then
+          replacement = buf.bufnr
+          break
+        end
+      end
+
+      if replacement then
+        vim.api.nvim_win_set_buf(0, replacement)
+      else
+        vim.cmd("enew")
+      end
+
+      pcall(vim.api.nvim_buf_delete, current, { force = force or false })
+    end
+
     _G.nixlab.close_all_buffers = function()
       vim.cmd("enew")
       local current = vim.api.nvim_get_current_buf()

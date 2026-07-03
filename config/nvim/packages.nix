@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [
+{ nvimPkgs, ... }: {
+  programs.nixvim.extraPackages = with nvimPkgs; [
     gcc
     stylua
     gnumake
@@ -7,6 +7,8 @@
     gnuplot
     lua
     luarocks
+    go
+    gotools
     ruff
     basedpyright
     selene
@@ -17,15 +19,21 @@
     ansible-lint
     python3Packages.debugpy
     python3Packages.ty
-    pkgs."ansible-language-server"
-    pkgs."bash-language-server"
+    ansible-language-server
+    bash-language-server
     gopls
-    pkgs."helm-ls"
-    pkgs."lua-language-server"
+    helm-ls
+    lua-language-server
+    nixfmt
+    shellcheck
+    shfmt
     taplo
+    terraform
+    terraform-ls
+    tflint
     yamlfmt
     yamllint
-    pkgs."yaml-language-server"
-    pkgs."vscode-langservers-extracted"
+    yaml-language-server
+    vscode-langservers-extracted
   ];
 }
