@@ -4,7 +4,6 @@ dotfiles/bash-old
 homelabv2/
 user-config.nix
 result
-.devboxvagrant up --provider=libvirt
+.devbox/
+.vagrant/
 .vm/*
-!.vm/templates/
-!.vm/templates/*
