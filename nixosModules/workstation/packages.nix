@@ -1,0 +1,20 @@
+{
+  pkgs,
+  ...
+}:
+{
+  environment.systemPackages = with pkgs; [
+    foot
+    gamescope
+    gvfs-mtp
+    seatd
+    xorg-x11-server-Xwayland
+    chromium
+    firefox
+    cloud-utils
+    qemu_kvm
+    thunderbird
+    wl-clipboard
+    devbox
+  ];
+}
