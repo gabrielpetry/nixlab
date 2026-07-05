@@ -13,10 +13,9 @@ if [ "${#files[@]}" -eq 0 ]; then
     exit 0
 fi
 
-status=0
+snapshot=$(mktemp -d)
+trap 'rm -rf "$snapshot"' EXIT
 
-for file in "${files[@]}"; do
-    .githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license "$file" || status=$?
-done
+git checkout-index --stdin --prefix="$snapshot/" < "$staged_files"
 
-exit "$status"
+.githooks/_bin/trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress --scanners vuln,misconfig,secret,license "$snapshot"
