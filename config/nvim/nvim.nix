@@ -49,7 +49,6 @@ in
     extraPlugins = [
       diagramNvim
       nvimPkgs.vimPlugins.image-nvim
-      nvimPkgs.vimPlugins.minuet-ai-nvim
     ];
   };
 }

@@ -43,13 +43,13 @@ The local VM harness only manages Vagrant/QEMU lifecycle:
 Install any reachable host with the standalone `nixos-anywhere` wrapper:
 
 ```sh
-./nixanywhere.sh --hostname vm01 --ip 127.0.0.1 --port 50022 --ssh-user vagrant --ssh-key .vagrant/machines/vm01/qemu/private_key
+./nixanywhere.sh install --hostname vm01 --ip 127.0.0.1 --port 50022 --ssh-user vagrant --ssh-key .vagrant/ssh/nixlab_dev_key
 ```
 
-For a normal server, `--ssh-user` defaults to `root`, `--port` defaults to `22`, and `--ssh-key` defaults to the first existing key under `~/.ssh/id_ed25519` or `~/.ssh/id_rsa`:
+For the Vagrant/QEMU path, `--ssh-user vagrant` is only used before kexec while the box is still Ubuntu; the wrapper reconnects to the temporary NixOS installer as `root` by default. For a normal server, `--ssh-user` defaults to `root`, `--port` defaults to `22`, and `--ssh-key` defaults to the first existing key under `~/.ssh/id_ed25519` or `~/.ssh/id_rsa`:
 
 ```sh
-./nixanywhere.sh --hostname my-host --ip 203.0.113.10
+./nixanywhere.sh install --hostname my-host --ip 203.0.113.10
 ```
 
 Notes:
