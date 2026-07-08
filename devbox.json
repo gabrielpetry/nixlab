@@ -1,6 +1,7 @@
 {
   "packages": [
     "bash@latest",
+    "ruby@latest",
     "coreutils@latest",
     "findutils@latest",
     "git@latest",

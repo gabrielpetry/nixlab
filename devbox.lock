@@ -825,6 +825,71 @@
         }
       }
     },
+    "ruby@latest": {
+      "last_modified": "2026-06-27T07:37:20Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/3d46470bb3030020f7e1361f33514854f5bfa86d#ruby_4_0",
+      "source": "devbox-search",
+      "version": "4.0.5",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/0f6y1n24v20bipp9485d1lwazsnq8a1y-ruby-4.0.5",
+              "default": true
+            },
+            {
+              "name": "devdoc",
+              "path": "/nix/store/c8cvs080sk3786sbyp9292s4z154c7bi-ruby-4.0.5-devdoc"
+            }
+          ],
+          "store_path": "/nix/store/0f6y1n24v20bipp9485d1lwazsnq8a1y-ruby-4.0.5"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/zvsi838wqmzh85m8qvfznz6ganbzxjx0-ruby-4.0.5",
+              "default": true
+            },
+            {
+              "name": "devdoc",
+              "path": "/nix/store/9f1alf5zznwvxl691s4swkxmzqivv5g4-ruby-4.0.5-devdoc"
+            }
+          ],
+          "store_path": "/nix/store/zvsi838wqmzh85m8qvfznz6ganbzxjx0-ruby-4.0.5"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/23113b2pkvfv3axci54pv9wzmbp899ib-ruby-4.0.5",
+              "default": true
+            },
+            {
+              "name": "devdoc",
+              "path": "/nix/store/maf0grgwc3g576p6d06qsppf3vx83brb-ruby-4.0.5-devdoc"
+            }
+          ],
+          "store_path": "/nix/store/23113b2pkvfv3axci54pv9wzmbp899ib-ruby-4.0.5"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/l5zab8mappvc67vfjmfs2akdlh0dvh06-ruby-4.0.5",
+              "default": true
+            },
+            {
+              "name": "devdoc",
+              "path": "/nix/store/ckaclya0zlgx90d76yfljs2amxrsx005-ruby-4.0.5-devdoc"
+            }
+          ],
+          "store_path": "/nix/store/l5zab8mappvc67vfjmfs2akdlh0dvh06-ruby-4.0.5"
+        }
+      }
+    },
     "trivy@latest": {
       "last_modified": "2026-06-27T07:37:20Z",
       "resolved": "github:NixOS/nixpkgs/3d46470bb3030020f7e1361f33514854f5bfa86d#trivy",
