@@ -28,9 +28,11 @@ That's it. `lib/run.sh` handles the workstation bootstrap automatically:
 
 ## 🖥️ Server Install And E2E Test
 
-`nixosConfigurations` is the server path in this repo. The current local test host is `vm01`.
+This repo provides shared building blocks for server hosts and simple VM definitions for end-to-end deployment testing.
 
-Versioned hosts live under `nixosAnywhere/`. Private hosts are loaded from a separate repository checked out at `nixosAnywhere/local/`, with `nixosAnywhere/local/default.nix` as its entrypoint. A tracked contract example lives at `nixosAnywhere/local.example.nix`.
+- `lib.mkHost` (from `nixosAnywhere/lib.nix`) is the shared host constructor, exposed as `nixlab.lib.mkHost`.
+- `nixosModules/*` contain reusable NixOS modules.
+- `nixosAnywhere/vms/` contains the example VM definitions exported by the main flake.
 
 The local VM harness uses Vagrant with the QEMU provider:
 
@@ -48,37 +50,55 @@ For `vm01`, the local harness also forwards the K3s ports to localhost:
 
 Additional VMs use the same ports with `+100` per VM index.
 
+### Rebuild a VM
+
+```sh
+./lib/inventory.sh vm01 --install
+./lib/inventory.sh vm01 --rebuild
+```
+
+`--install` selects the minimal `vm01-install` configuration (disk, network, SSH keys, and bootstrap user). `--rebuild` selects `vm01`, which adds the full runtime configuration including Docker, K3s, BWS, and exporters.
+
+The full playbook also performs both phases and bootstraps the local BWS credential:
+
+```sh
+./lib/playbooks.sh vm01
+```
+
+This rebuilds the `vm01` configuration exported by the main flake. The VM helper passes `--insecure` because the disposable VM's SSH host key changes when it is recreated.
+
+### Install a fresh host
+
 Install any reachable host with the standalone `nixos-anywhere` wrapper:
 
 ```sh
-./lib/nixanywhere.sh install --hostname vm01 --ip 127.0.0.1 --port 22101 --ssh-user vagrant --ssh-key .vagrant/ssh/nixlab_dev_key
+./lib/nixanywhere.sh install --hostname vm01-install --ip 127.0.0.1 --port 22101 --ssh-user vagrant --ssh-key .vagrant/ssh/nixlab_dev_key --insecure
 ```
 
 For the Vagrant/QEMU path, `--ssh-user vagrant` is only used before kexec while the box is still Ubuntu; the wrapper reconnects to the temporary NixOS installer as `root` by default. For a normal server, `--ssh-user` defaults to `root`, `--port` defaults to `22`, and `--ssh-key` defaults to the first existing key under `~/.ssh/id_ed25519` or `~/.ssh/id_rsa`:
 
 ```sh
-./lib/nixanywhere.sh install --hostname my-host --ip 203.0.113.10
+./lib/nixanywhere.sh install --hostname my-host --ip 203.0.10.10
 ```
 
-Notes:
+SSH host keys are recorded with OpenSSH's `accept-new` policy by default. Use `--insecure` only for disposable local test machines where host-key verification is intentionally disabled.
 
-- `--hostname` selects the `nixosConfigurations` flake output to install.
-- The install flow uses `path:$PROJECT_ROOT#HOSTNAME` so repo-local generated files remain visible to Nix.
-- The installed server host intentionally does **not** use Home Manager.
-
-Example private host layout:
+### Example VM layout
 
 ```text
 nixosAnywhere/
-  local/
-    .git/
-    default.nix          # returns nixosConfigurations entries
-    my-host/
-      default.nix
-      disko.nix
+  vms/
+    vm01-install.nix   # network, disk, SSH, bootstrap user only
+    vm02-install.nix
+    vm03-install.nix
+    vm01.nix            # full rebuild configuration
+    vm02.nix
+    vm03.nix
+    vms.nix
+    disko.nix
 ```
 
-The `nixosAnywhere/local/` tree is fully gitignored in this repo so it can be owned by that separate private repository.
+The main flake exports these examples through `nixosConfigurations`. Keep machine-specific secrets and user settings in the non-versioned `user-config.nix`; never place secret values in Nix expressions.
 
 ---
 
@@ -120,6 +140,51 @@ If you want to cherry-pick individual components into your own Nix config:
   };
 }
 ```
+
+---
+
+## 🔐 Bitwarden Secrets Manager — initial token setup
+
+The `bws` NixOS module (`nixosModules/bws/bws.nix`) fetches secrets from Bitwarden Secrets Manager at runtime and stores them as systemd-encrypted credentials on disk.
+
+You need to create the encrypted access token before the module can run:
+
+```sh
+# 1. Paste or type your BWS access token (output is hidden)
+read -rsp "BWS access token: " BWS_ACCESS_TOKEN
+
+# 2. Encrypt it with systemd-creds, locked to this machine
+sudo install -d -m 700 /var/lib/bws
+printf '%s' "$BWS_ACCESS_TOKEN" \
+  | sudo systemd-creds encrypt --with-key=auto --name=bws-token - /var/lib/bws/bws-token.cred
+
+# 3. Clear the plaintext from the shell
+unset BWS_ACCESS_TOKEN
+
+# 4. Lock down permissions
+sudo chmod 0400 /var/lib/bws/bws-token.cred
+```
+
+You can verify the encrypted token is usable by decrypting it with `systemd-creds` (for testing only):
+
+```sh
+sudo systemd-creds decrypt --with-key=auto /var/lib/bws/bws-token.cred -
+```
+
+### Getting a BWS access token
+
+1. Log in to the [Bitwarden Secrets Manager web UI](https://bitwarden.com/products/secrets-manager/) (or your self-hosted instance)
+2. Navigate to your project → **Service Accounts** → create a new service account
+3. Copy the **Access Token** that is shown once
+4. Store it securely — it will not be shown again
+
+The access token needs at least `read` permission on the secrets referenced by your `bws.files` config.
+
+### Per-secret credential files
+
+Each entry under `bws.files.<name>` with `storage = "systemd-credential"` (the default) is automatically encrypted with `systemd-creds encrypt --with-key=auto` when the fetch unit runs. The encrypted file lives at the configured `path` (e.g. `/var/lib/bws/k3s-token.cred`).
+
+Consumer services load these files via `LoadCredentialEncrypted=` in their systemd unit. When the `environmentVariable` option is set, the service also gets an `Environment=<VAR>=%d/<name>` entry pointing to the decrypted credential at runtime.
 
 ---
 

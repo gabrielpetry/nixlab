@@ -15,3 +15,15 @@ fetch.url = "https://github.com/open-telemetry/opentelemetry-collector-releases/
 src.github = "open-telemetry/opentelemetry-collector-releases"
 src.prefix = "v"
 fetch.url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v$ver/otelcol-contrib_$ver_linux_arm64.tar.gz"
+
+[bws-x64]
+src.github_tag = "bitwarden/sdk-sm"
+src.include_regex = "^bws-v.*"
+src.prefix = "bws-v"
+fetch.url = "https://github.com/bitwarden/sdk-sm/releases/download/bws-v$ver/bws-x86_64-unknown-linux-gnu-$ver.zip"
+
+[bws-arm64]
+src.github_tag = "bitwarden/sdk-sm"
+src.include_regex = "^bws-v.*"
+src.prefix = "bws-v"
+fetch.url = "https://github.com/bitwarden/sdk-sm/releases/download/bws-v$ver/bws-aarch64-unknown-linux-gnu-$ver.zip"

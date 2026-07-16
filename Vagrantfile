@@ -5,11 +5,17 @@ def env_int(name, default)
   value.empty? ? default : Integer(value)
 end
 
-machine_count = env_int("MACHINE_COUNT", 1)
+# Define the three NixOS hosts by default. Each additional VM reuses this
+# configuration with a sequential name, IP address, and forwarded ports.
+machine_count = env_int("MACHINE_COUNT", 3)
 vm_cpus = env_int("VM_CPUS", 2)
 vm_memory = env_int("VM_MEMORY", 2048)
 ip_prefix = ENV.fetch("VAGRANT_IP_PREFIX", "10.10.130")
-ssh_port_base = env_int("VAGRANT_SSH_PORT_BASE", 50021)
+ssh_port_base = env_int("VAGRANT_SSH_PORT_BASE", 22100)
+k3s_api_port_base = env_int("VAGRANT_K3S_API_PORT_BASE", 26443)
+k3s_http_port_base = env_int("VAGRANT_K3S_HTTP_PORT_BASE", 28080)
+k3s_https_port_base = env_int("VAGRANT_K3S_HTTPS_PORT_BASE", 28443)
+cluster_mcast_addr = ENV.fetch("VAGRANT_CLUSTER_MCAST_ADDR", "230.0.0.55:11234")
 
 ssh_dir = File.expand_path(".vagrant/ssh", __dir__)
 shared_private_key = File.join(ssh_dir, "nixlab_dev_key")
@@ -51,9 +57,17 @@ Vagrant.configure("2") do |config|
     vm_name = format("vm%02d", index)
     vm_ip = "#{ip_prefix}.#{100 + index}"
     ssh_host_port = ssh_port_base + index
+    port_offset = (index - 1) * 100
+    k3s_api_host_port = k3s_api_port_base + port_offset
+    k3s_http_host_port = k3s_http_port_base + port_offset
+    k3s_https_host_port = k3s_https_port_base + port_offset
 
     config.vm.define vm_name do |machine|
       machine.vm.hostname = vm_name
+      machine.vm.network "private_network", ip: vm_ip
+      machine.vm.network "forwarded_port", guest: 6443, host: k3s_api_host_port, host_ip: "127.0.0.1"
+      machine.vm.network "forwarded_port", guest: 80, host: k3s_http_host_port, host_ip: "127.0.0.1"
+      machine.vm.network "forwarded_port", guest: 443, host: k3s_https_host_port, host_ip: "127.0.0.1"
 
       machine.vm.provider "qemu" do |qe|
         qe.name = vm_name
@@ -61,7 +75,11 @@ Vagrant.configure("2") do |config|
         qe.smp = vm_cpus.to_s
         qe.ssh_port = ssh_host_port.to_s
         qe.ssh_auto_correct = true
-        qe.extra_netdev_args = "net=#{ip_prefix}.0/24,dhcpstart=#{vm_ip}"
+        # Keep Vagrant SSH on QEMU's user-mode NIC (eth0) and add a shared
+        # loopback-backed multicast NIC (eth1) for cluster traffic between VMs.
+        qe.advanced_network = true
+        qe.net_mode = :socket
+        qe.socket_opts = "mcast=#{cluster_mcast_addr},localaddr=127.0.0.1"
       end
 
       machine.vm.provision "shell", inline: <<~SHELL

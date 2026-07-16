@@ -57,6 +57,7 @@ in
     cmake
     libffi
     libyaml
+    openssl
     openssl.dev
     pkg-config
     readline

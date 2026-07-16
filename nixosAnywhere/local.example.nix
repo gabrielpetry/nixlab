@@ -2,17 +2,18 @@
   inputs,
   system,
   username,
+  userConfig ? { },
 }:
 
 let
-  inherit (import ./lib.nix { inherit inputs system username; }) mkHost;
+  inherit (import ./lib.nix { inherit inputs; }) mkHost;
 in
 {
-  # Clone a private repository into nixosAnywhere/local/ and use its
-  # default.nix as the attrset entrypoint for private hosts.
-  #
-  # my-host = mkHost [
-  #   ./local/my-host/disko.nix
-  #   ./local/my-host/default.nix
-  # ];
+  # Example for optional private hosts if you want to keep separate files.
+  # my-host = mkHost {
+  #   inherit system username userConfig;
+  #   modules = [
+  #     ./local/my-host/default.nix
+  #   ];
+  # };
 }

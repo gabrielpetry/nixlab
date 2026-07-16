@@ -18,37 +18,48 @@ fi
 function vm_deploy {
     @internal
     @doc "Basic args for deploy vms"
-    @arg "--vm" "VM to deploy"
+    @arg "required" "--vm" "VM to deploy"
     @arg "default=22" "--ssh-port|-s" "SSH port to use"
     @flag "--rebuild" "Rebuild the VM"
     @flag "--install" "Install the VM"
 
-    local vm ssh_port rebuild install ip
+    local vm ssh_port rebuild install ip user_config ssh_pubkey
+    local -a action
     @args "$@" || return $?
     ip="127.0.0.1"
+    user_config="${NIXLAB_USER_CONFIG:-$GIT_ROOT/user-config.nix}"
+    ssh_pubkey="${NIXLAB_VM_SSH_PUBKEY_FILE:-$GIT_ROOT/.vagrant/ssh/nixlab_dev_key.pub}"
 
-    function rebuild {
-        ./lib/nixanywhere.sh \
-            rebuild \
-            --ssh-host "$ip" \
-            --ssh-port "$ssh_port" \
-            --ssh-user root \
-            --flake "path:$GIT_ROOT#${vm}" \
+    if [[ "$rebuild" == "true" && "$install" == "true" ]] ||
+       [[ "$rebuild" != "true" && "$install" != "true" ]]; then
+        log_fail 'choose exactly one of --install or --rebuild'
+    fi
+
+    if [[ "$rebuild" == "true" ]]; then
+        action=(
+            rebuild
+            --ssh-host "$ip"
+            --ssh-port "$ssh_port"
+            --ssh-user root
+            --insecure
+            --flake "path:${GIT_ROOT}#${vm}"
             --ssh-key "$GIT_ROOT/.vagrant/ssh/nixlab_dev_key"
-    }
-
-    function install {
-        ./lib/nixanywhere.sh \
-            install \
-            --hostname "$vm" \
-            --ip "$ip" \
-            --port "$ssh_port" \
-            --ssh-user vagrant \
+        )
+    else
+        action=(
+            install
+            --hostname "${vm}-install"
+            --ip "$ip"
+            --port "$ssh_port"
+            --ssh-user vagrant
+            --insecure
             --ssh-key "$GIT_ROOT/.vagrant/ssh/nixlab_dev_key"
-    }
+        )
+    fi
 
-    [[ "$rebuild" == "true" ]] && rebuild
-    [[ "$install" == "true" ]] && install
+    NIXLAB_USER_CONFIG="$user_config" \
+        NIXLAB_VM_SSH_PUBKEY_FILE="$ssh_pubkey" \
+        "$GIT_ROOT/lib/nixanywhere.sh" "${action[@]}"
 }
 
 function vm01 {

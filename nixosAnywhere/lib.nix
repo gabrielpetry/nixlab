@@ -1,50 +1,56 @@
 {
   inputs,
-  system,
-  username,
 }:
 
 let
   inherit (inputs) nixpkgs disko;
-
-  commonModules = [
-    disko.nixosModules.disko
-    ../nixosModules/common.nix
-    ../nixosModules/firewall/firewall.nix
-    ../nixosModules/docker/docker.nix
-    ../nixosModules/exporters/otel.nix
-
-    {
-      nix.settings.trusted-users = [
-        "root"
-        username
-      ];
-      nixlab.docker.extraUsers = [ username ];
-      services.openssh.settings = {
-        KbdInteractiveAuthentication = false;
-        PasswordAuthentication = false;
-        PermitRootLogin = "prohibit-password";
-      };
-
-      nixlab.firewall.enable = true;
-
-      nixlab.otelHostMetrics = {
-        enable = true;
-        otlpEndpoint = "otel-collector:4317"; # gRPC host:port, NOT a http(s):// URL
-        otlpInsecure = true;
-      };
-
-      security.sudo.wheelNeedsPassword = false;
-    }
-  ];
 in
 {
   mkHost =
-    modules:
+    {
+      system,
+      username,
+      userConfig ? { },
+      profile ? "full",
+      modules,
+    }:
+    let
+      baseModules = [
+        disko.nixosModules.disko
+        ../nixosModules/common.nix
+        ../nixosModules/firewall/firewall.nix
+      ];
+      runtimeModules = [
+        ../nixosModules/bws/bws.nix
+        ../nixosModules/docker/docker.nix
+        ../nixosModules/exporters/otel.nix
+        ../nixosModules/k3s/common.nix
+        ../nixosModules/k3s/server.nix
+        ../nixosModules/k3s/agent.nix
+      ];
+      commonModules =
+        baseModules
+        ++ nixpkgs.lib.optionals (profile == "full") runtimeModules
+        ++ [
+          {
+            nixpkgs.config.allowUnfreePredicate =
+              pkg: profile == "full" && builtins.elem (nixpkgs.lib.getName pkg) [ "bws" ];
+
+            services.openssh.settings = {
+              KbdInteractiveAuthentication = false;
+              PasswordAuthentication = false;
+              PermitRootLogin = "prohibit-password";
+            };
+
+            nixlab.firewall.enable = true;
+
+          }
+        ];
+    in
     nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit username;
+        inherit username userConfig;
       };
       modules = commonModules ++ modules;
     };
