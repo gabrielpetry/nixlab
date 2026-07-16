@@ -1,6 +1,0 @@
-<network>
-  <name>$VIRSH_NETWORK</name>
-  <bridge name="$VIRSH_NETWORK_BRIDGE_NAME" />
-  <forward mode="route" />
-  <ip address="$VIRSH_NETWORK_IP" netmask="$VIRSH_NETWORK_NETMASK" />
-</network>
