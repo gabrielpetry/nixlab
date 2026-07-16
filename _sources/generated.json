@@ -1,4 +1,34 @@
 {
+    "bws-arm64": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "bws-arm64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-GCU3VyhuEZ1FATOofrRjv4wc5BjOJMg09PJQ1gy6b54=",
+            "type": "url",
+            "url": "https://github.com/bitwarden/sdk-sm/releases/download/bws-v2.1.0/bws-aarch64-unknown-linux-gnu-2.1.0.zip"
+        },
+        "version": "2.1.0"
+    },
+    "bws-x64": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "bws-x64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-uoIzw6Su5dQ+PHO70E2Z6bxauhO7v9BtibBzq+cyuGA=",
+            "type": "url",
+            "url": "https://github.com/bitwarden/sdk-sm/releases/download/bws-v2.1.0/bws-x86_64-unknown-linux-gnu-2.1.0.zip"
+        },
+        "version": "2.1.0"
+    },
     "otelcol-contrib-arm64": {
         "cargoLock": null,
         "date": null,

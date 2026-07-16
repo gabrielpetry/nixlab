@@ -6,6 +6,22 @@
   dockerTools,
 }:
 {
+  bws-arm64 = {
+    pname = "bws-arm64";
+    version = "2.1.0";
+    src = fetchurl {
+      url = "https://github.com/bitwarden/sdk-sm/releases/download/bws-v2.1.0/bws-aarch64-unknown-linux-gnu-2.1.0.zip";
+      sha256 = "sha256-GCU3VyhuEZ1FATOofrRjv4wc5BjOJMg09PJQ1gy6b54=";
+    };
+  };
+  bws-x64 = {
+    pname = "bws-x64";
+    version = "2.1.0";
+    src = fetchurl {
+      url = "https://github.com/bitwarden/sdk-sm/releases/download/bws-v2.1.0/bws-x86_64-unknown-linux-gnu-2.1.0.zip";
+      sha256 = "sha256-uoIzw6Su5dQ+PHO70E2Z6bxauhO7v9BtibBzq+cyuGA=";
+    };
+  };
   otelcol-contrib-arm64 = {
     pname = "otelcol-contrib-arm64";
     version = "0.155.0";
