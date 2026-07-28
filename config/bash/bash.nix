@@ -23,10 +23,6 @@
     initExtra = ''
       export CACHE_DIR="$HOME/.cache"
 
-      if [[ -z "$TMUX" ]] && [[ -z "$TERM_PROGRAM" ]] && command -v tmux; then
-        tmux
-      fi
-
       . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
       mkcd() {
@@ -80,12 +76,7 @@
       unset VIRTUAL_ENV
       unset VIRTUAL_ENV_PROMPT
 
-      if [ -n "$TMUX" ]; then
-        export TMUX_PANE="$(tmux display-message -p '#{pane_id}' 2>/dev/null)"
-      fi
-
       source ~/.config/bash/aliases.bash
-      cd . # set tmux tab name
 
     '';
 

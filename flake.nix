@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    herdr = {
+      url = "github:ogulcancelik/herdr/v0.7.5";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +28,7 @@
   outputs =
     {
       nixpkgs,
+      herdr,
       disko,
       home-manager,
       nixvim,
@@ -33,6 +39,23 @@
       pkgs = import nixpkgs {
         inherit system;
       };
+      herdrModule =
+        { pkgs, ... }:
+        {
+          _module.args.herdrPackage = herdr.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          imports = [ ./config/herdr/herdr.nix ];
+        };
+      tmuxModule =
+        { pkgs, ... }:
+        let
+          tmuxPkgs = import nixpkgs {
+            system = pkgs.stdenv.hostPlatform.system;
+          };
+        in
+        {
+          _module.args.tmuxPkgs = tmuxPkgs;
+          imports = [ ./config/tmux/tmux.nix ];
+        };
       neovimModule = {
         _module.args = {
           nixvimLib = nixvim.lib.nixvim;
@@ -78,11 +101,11 @@
           ./config/environment.nix
           ./tooling/tooling.nix
           neovimModule
-          ./config/tmux/tmux.nix
+          tmuxModule
+          herdrModule
           ./config/bash/bash.nix
           ./config/starship/starship.nix
           ./config/kde.nix
-          ./nixosModules/bws/bws.nix
           ./nixosModules/coding-agents/pi.nix
         ];
       };
@@ -99,13 +122,14 @@
       };
 
       homeModules = {
-        bws = import ./nixosModules/bws/bws.nix;
         packages = import ./config/packages.nix;
         environment = import ./config/environment.nix;
         bash = import ./config/bash/bash.nix;
         starship = import ./config/starship/starship.nix;
         kde = import ./config/kde.nix;
-        tmux = import ./config/tmux/tmux.nix;
+        tmux = tmuxModule;
+        herdr = herdrModule;
+        multiplexer = import ./config/multiplexer.nix;
         neovim = neovimModule;
         tooling = import ./tooling/tooling.nix;
       };

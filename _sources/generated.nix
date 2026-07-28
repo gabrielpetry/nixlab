@@ -24,34 +24,34 @@
   };
   otelcol-contrib-arm64 = {
     pname = "otelcol-contrib-arm64";
-    version = "0.155.0";
+    version = "0.157.0";
     src = fetchurl {
-      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.155.0/otelcol-contrib_0.155.0_linux_arm64.tar.gz";
-      sha256 = "sha256-8vrAedW3Yacp5Jul2zGcq5Kv/FWEBtxC48HAjggn4U8=";
+      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.157.0/otelcol-contrib_0.157.0_linux_arm64.tar.gz";
+      sha256 = "sha256-NOuCOQxGLId91g7F7ITeiZCIkW+s0HMG7JiOTDS9BbM=";
     };
   };
   otelcol-contrib-x64 = {
     pname = "otelcol-contrib-x64";
-    version = "0.155.0";
+    version = "0.157.0";
     src = fetchurl {
-      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.155.0/otelcol-contrib_0.155.0_linux_amd64.tar.gz";
-      sha256 = "sha256-Ipz93rBiHSoBG/0ciJQzVHnkY0m5Ogz7zL5lNEOj7JU=";
+      url = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.157.0/otelcol-contrib_0.157.0_linux_amd64.tar.gz";
+      sha256 = "sha256-0zF3UVokSiOT8D/9Zqs+aKj8EaVrwUXsTQyiZE7pVQQ=";
     };
   };
   pi-coding-agent-arm64 = {
     pname = "pi-coding-agent-arm64";
-    version = "v0.80.3";
+    version = "v0.82.1";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.80.3/pi-linux-arm64.tar.gz";
-      sha256 = "sha256-xUSrKglTqb2jWMq5vDKLHvaJLUqCTYaTiAl35LI8YWg=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.82.1/pi-linux-arm64.tar.gz";
+      sha256 = "sha256-nnA2+JNwxEMjWioKjMyRqcwrf0r17CCy2tHG9yqpFuY=";
     };
   };
   pi-coding-agent-x64 = {
     pname = "pi-coding-agent-x64";
-    version = "v0.80.3";
+    version = "v0.82.1";
     src = fetchurl {
-      url = "https://github.com/earendil-works/pi/releases/download/v0.80.3/pi-linux-x64.tar.gz";
-      sha256 = "sha256-50o0rCUFVWFkFE2OOaZNbVJ28JIWba2RQxntwwxIq+4=";
+      url = "https://github.com/earendil-works/pi/releases/download/v0.82.1/pi-linux-x64.tar.gz";
+      sha256 = "sha256-iEqd7H4LdaVMTRkzyTp9Ra8fu4HDKWTB3UXWf6wfZUQ=";
     };
   };
 }

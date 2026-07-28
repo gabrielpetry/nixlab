@@ -24,7 +24,9 @@ in
         ../nixosModules/bws/bws.nix
         ../nixosModules/docker/docker.nix
         ../nixosModules/exporters/otel.nix
+        ../nixosModules/system/tunning.nix
         ../nixosModules/k3s/common.nix
+        ../nixosModules/k3s/registry-mirror.nix
         ../nixosModules/k3s/server.nix
         ../nixosModules/k3s/agent.nix
       ];
@@ -43,6 +45,8 @@ in
             };
 
             nixlab.firewall.enable = true;
+            nixlab.tunning.enable = true;
+            nixlab.k3s.registryMirror.enable = true;
 
           }
         ];

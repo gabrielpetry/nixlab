@@ -7,14 +7,14 @@ project_root="$(git -C "$script_dir" rev-parse --show-toplevel)"
 cd "$project_root"
 
 # Require a clean tree so generated and updated files are deliberate.
-if git -C "$project_root" rev-parse --git-dir >/dev/null 2>&1; then
-  changes="$(git -C "$project_root" status --porcelain)"
-  if [[ -n "$changes" ]]; then
-    echo "Error: The repository has uncommitted changes. Commit or clean them before running." >&2
-    echo "$changes" >&2
-    exit 1
-  fi
-fi
+# if git -C "$project_root" rev-parse --git-dir >/dev/null 2>&1; then
+#   changes="$(git -C "$project_root" status --porcelain)"
+#   if [[ -n "$changes" ]]; then
+#     echo "Error: The repository has uncommitted changes. Commit or clean them before running." >&2
+#     echo "$changes" >&2
+#     exit 1
+#   fi
+# fi
 
 test -d /nix ||
   sh <(curl -fSs --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon

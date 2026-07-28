@@ -1,7 +1,30 @@
-{ pkgs, ... }:
 {
+  config,
+  lib,
+  tmuxPkgs,
+  ...
+}:
+{
+  imports = [ ../multiplexer.nix ];
+
+  programs.bash = {
+    initExtra = lib.mkIf (config.nixlab.multiplexer.autoStart == "tmux") ''
+      if [[ -z "''${TMUX:-}" ]] && [[ "''${HERDR_ENV:-0}" != "1" ]] && [[ -z "''${TERM_PROGRAM:-}" ]] && command -v tmux >/dev/null 2>&1; then
+        tmux
+      fi
+    '';
+
+    bashrcExtra = ''
+      if [[ -n "''${TMUX:-}" ]]; then
+        export TMUX_PANE="$(tmux display-message -p '#{pane_id}' 2>/dev/null)"
+        cd . # set tmux tab name
+      fi
+    '';
+  };
+
   programs.tmux = {
     enable = true;
+    package = tmuxPkgs.tmux;
 
     # ── Core options ──────────────────────────────────────────────────────────
     mouse = true;
