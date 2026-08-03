@@ -68,11 +68,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-nnA2+JNwxEMjWioKjMyRqcwrf0r17CCy2tHG9yqpFuY=",
+            "sha256": "sha256-uE+QFmEMc43ZRA32L2SYgNvplR25enrpNsvykoUOmAI=",
             "type": "url",
-            "url": "https://github.com/earendil-works/pi/releases/download/v0.82.1/pi-linux-arm64.tar.gz"
+            "url": "https://github.com/earendil-works/pi/releases/download/v0.83.0/pi-linux-arm64.tar.gz"
         },
-        "version": "v0.82.1"
+        "version": "v0.83.0"
     },
     "pi-coding-agent-x64": {
         "cargoLock": null,
@@ -83,10 +83,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-iEqd7H4LdaVMTRkzyTp9Ra8fu4HDKWTB3UXWf6wfZUQ=",
+            "sha256": "sha256-sGJetiMZewr+IMhw0h7y80SB8VBOV3ffP2mKZsdjb18=",
             "type": "url",
-            "url": "https://github.com/earendil-works/pi/releases/download/v0.82.1/pi-linux-x64.tar.gz"
+            "url": "https://github.com/earendil-works/pi/releases/download/v0.83.0/pi-linux-x64.tar.gz"
         },
-        "version": "v0.82.1"
+        "version": "v0.83.0"
     }
 }
