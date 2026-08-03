@@ -169,7 +169,7 @@ in
         "t"
       ];
       key = "<C-h>";
-      action = mkRaw ''function() require("smart-splits").move_cursor_left() end'';
+      action = mkRaw ''function() _G.nixlab.move_pane("left") end'';
       options = {
         silent = true;
         desc = "Move to left split";
@@ -182,7 +182,7 @@ in
         "t"
       ];
       key = "<C-j>";
-      action = mkRaw ''function() require("smart-splits").move_cursor_down() end'';
+      action = mkRaw ''function() _G.nixlab.move_pane("down") end'';
       options = {
         silent = true;
         desc = "Move to below split";
@@ -195,7 +195,7 @@ in
         "t"
       ];
       key = "<C-k>";
-      action = mkRaw ''function() require("smart-splits").move_cursor_up() end'';
+      action = mkRaw ''function() _G.nixlab.move_pane("up") end'';
       options = {
         silent = true;
         desc = "Move to above split";
@@ -208,7 +208,7 @@ in
         "t"
       ];
       key = "<C-l>";
-      action = mkRaw ''function() require("smart-splits").move_cursor_right() end'';
+      action = mkRaw ''function() _G.nixlab.move_pane("right") end'';
       options = {
         silent = true;
         desc = "Move to right split";

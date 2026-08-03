@@ -77,6 +77,46 @@
       _G.nixlab.terminals[command]:toggle()
     end
 
+    local function in_herdr()
+      return vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= ""
+    end
+
+    local function at_window_edge(direction)
+      local edge_winnr = ({
+        left = "h",
+        down = "j",
+        up = "k",
+        right = "l",
+      })[direction]
+      return edge_winnr and vim.fn.winnr(edge_winnr) == vim.fn.winnr()
+    end
+
+    local function focus_herdr_pane(direction)
+      local command = vim.env.HERDR_BIN_PATH or "herdr"
+      local pane = vim.env.HERDR_PANE_ID
+      if vim.fn.executable(command) ~= 1 then
+        vim.notify("Herdr executable not found", vim.log.levels.WARN)
+        return
+      end
+
+      vim.system({ command, "pane", "focus", "--pane", pane, "--direction", direction }, { text = true }, function(result)
+        if result.code ~= 0 and result.stderr and result.stderr ~= "" then
+          vim.schedule(function()
+            vim.notify(result.stderr:gsub("%s+$", ""), vim.log.levels.WARN)
+          end)
+        end
+      end)
+    end
+
+    _G.nixlab.move_pane = function(direction)
+      if in_herdr() and at_window_edge(direction) then
+        focus_herdr_pane(direction)
+        return
+      end
+
+      require("smart-splits")["move_cursor_" .. direction]()
+    end
+
     _G.nixlab.close_other_buffers = function()
       local current = vim.api.nvim_get_current_buf()
       close_buffers(function(buf) return buf ~= current end)

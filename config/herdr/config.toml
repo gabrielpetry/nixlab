@@ -3,6 +3,9 @@ onboarding = false
 [theme]
 name = "catppuccin"
 
+[ui]
+prompt_new_tab_name = false
+
 [keys]
 prefix = "ctrl+b"
 new_tab = ["prefix+ctrl+c", "alt+n"]
@@ -19,3 +22,27 @@ focus_pane_right = "prefix+l"
 split_vertical = ["prefix+minus", "prefix+shift+s"]
 split_horizontal = ["prefix+|", "prefix+s"]
 zoom = "prefix+z"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "shell"
+command = "herdr-pane-navigate left ctrl+h"
+description = "Focus left pane"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "shell"
+command = "herdr-pane-navigate down ctrl+j"
+description = "Focus pane below"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "shell"
+command = "herdr-pane-navigate up ctrl+k"
+description = "Focus pane above"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "shell"
+command = "herdr-pane-navigate right ctrl+l"
+description = "Focus right pane"
